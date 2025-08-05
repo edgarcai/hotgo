@@ -20,9 +20,7 @@
       "dom",
       "esnext"
     ],
-    "types": [
-      "vite/client"
-    ],
+    "types": [],
     "typeRoots": [
       "./node_modules/@types/",
       "./types"
