@@ -26,16 +26,19 @@ require (
 	github.com/minio/minio-go/v7 v7.0.94
 	github.com/mojocn/base64Captcha v1.3.8
 	github.com/olekukonko/tablewriter v0.0.5
+	github.com/pquerna/otp v1.5.0
 	github.com/qiniu/go-sdk/v7 v7.25.4
 	github.com/schollz/progressbar/v3 v3.18.0
 	github.com/shirou/gopsutil/v3 v3.24.5
 	github.com/silenceper/wechat/v2 v2.1.9
+	github.com/stretchr/testify v1.10.0
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.1202
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sms v1.0.1200
 	github.com/tencentyun/cos-go-sdk-v5 v0.7.66
 	github.com/ufilesdk-dev/ufile-gosdk v1.0.6
 	github.com/xuri/excelize/v2 v2.9.1
 	go.opentelemetry.io/otel v1.37.0
+	golang.org/x/crypto v0.39.0
 	golang.org/x/mod v0.25.0
 	golang.org/x/net v0.41.0
 	golang.org/x/tools v0.34.0
@@ -116,8 +119,8 @@ require (
 	github.com/philhofer/fwd v1.1.3-0.20240916144458-20a13a1f6b7c // indirect
 	github.com/pierrec/lz4/v4 v4.1.22 // indirect
 	github.com/pkg/errors v0.8.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/power-devops/perfstat v0.0.0-20210106213030-5aafc221ea8c // indirect
-	github.com/pquerna/otp v1.5.0 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
 	github.com/redis/go-redis/v9 v9.7.0 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect
@@ -144,7 +147,6 @@ require (
 	go.opentelemetry.io/otel/sdk v1.32.0 // indirect
 	go.opentelemetry.io/otel/trace v1.37.0 // indirect
 	go.uber.org/atomic v1.5.1 // indirect
-	golang.org/x/crypto v0.39.0 // indirect
 	golang.org/x/image v0.25.0 // indirect
 	golang.org/x/lint v0.0.0-20190930215403-16217165b5de // indirect
 	golang.org/x/sync v0.15.0 // indirect
