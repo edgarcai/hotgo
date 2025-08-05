@@ -50,6 +50,7 @@ func Admin(ctx context.Context, group *ghttp.RouterGroup) {
 			sys.ServeLicense, // 服务许可证
 			admin.Member,     // 用户
 			admin.TwoFactor,  // 双因子认证
+			admin.Auth,       // 认证API
 			admin.Monitor,    // 监控
 			admin.Role,       // 路由
 			admin.Dept,       // 部门
