@@ -2230,6 +2230,76 @@ INSERT INTO hg_admin_menu (
 
 -- --------------------------------------------------------
 
+--
+-- 表的结构 hg_user_two_factor
+--
+
+CREATE TABLE IF NOT EXISTS hg_user_two_factor (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    secret_key VARCHAR(255) NOT NULL,
+    is_enabled SMALLINT NOT NULL DEFAULT 0,
+    backup_codes_count INTEGER NOT NULL DEFAULT 0,
+    last_used_at TIMESTAMP NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    CONSTRAINT uk_user_two_factor_user_id UNIQUE (user_id)
+);
+
+COMMENT ON TABLE hg_user_two_factor IS '用户双因子认证表';
+COMMENT ON COLUMN hg_user_two_factor.id IS '主键ID';
+COMMENT ON COLUMN hg_user_two_factor.user_id IS '用户ID，关联hg_admin_member.id';
+COMMENT ON COLUMN hg_user_two_factor.secret_key IS '加密后的TOTP密钥';
+COMMENT ON COLUMN hg_user_two_factor.is_enabled IS '是否启用2FA，0=禁用，1=启用';
+COMMENT ON COLUMN hg_user_two_factor.backup_codes_count IS '剩余备用恢复码数量';
+COMMENT ON COLUMN hg_user_two_factor.last_used_at IS '最后使用时间';
+COMMENT ON COLUMN hg_user_two_factor.created_at IS '创建时间';
+COMMENT ON COLUMN hg_user_two_factor.updated_at IS '更新时间';
+
+CREATE INDEX idx_user_two_factor_user_id ON hg_user_two_factor (user_id);
+CREATE INDEX idx_user_two_factor_is_enabled ON hg_user_two_factor (is_enabled);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 hg_user_two_factor_backup_codes
+--
+
+CREATE TABLE IF NOT EXISTS hg_user_two_factor_backup_codes (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    code_hash VARCHAR(255) NOT NULL,
+    is_used SMALLINT NOT NULL DEFAULT 0,
+    used_at TIMESTAMP NULL,
+    created_at TIMESTAMP NOT NULL
+);
+
+COMMENT ON TABLE hg_user_two_factor_backup_codes IS '用户双因子认证备用恢复码表';
+COMMENT ON COLUMN hg_user_two_factor_backup_codes.id IS '主键ID';
+COMMENT ON COLUMN hg_user_two_factor_backup_codes.user_id IS '用户ID，关联hg_admin_member.id';
+COMMENT ON COLUMN hg_user_two_factor_backup_codes.code_hash IS '备用恢复码的哈希值';
+COMMENT ON COLUMN hg_user_two_factor_backup_codes.is_used IS '是否已使用，0=未使用，1=已使用';
+COMMENT ON COLUMN hg_user_two_factor_backup_codes.used_at IS '使用时间';
+COMMENT ON COLUMN hg_user_two_factor_backup_codes.created_at IS '创建时间';
+
+CREATE INDEX idx_user_two_factor_backup_codes_user_id ON hg_user_two_factor_backup_codes (user_id);
+CREATE INDEX idx_user_two_factor_backup_codes_is_used ON hg_user_two_factor_backup_codes (is_used);
+CREATE INDEX idx_user_two_factor_backup_codes_user_id_is_used ON hg_user_two_factor_backup_codes (user_id, is_used);
+
+--
+-- 为表 hg_user_two_factor 添加外键约束
+--
+ALTER TABLE hg_user_two_factor
+    ADD CONSTRAINT fk_user_two_factor_user_id FOREIGN KEY (user_id) REFERENCES hg_admin_member (id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 为表 hg_user_two_factor_backup_codes 添加外键约束
+--
+ALTER TABLE hg_user_two_factor_backup_codes
+    ADD CONSTRAINT fk_user_two_factor_backup_codes_user_id FOREIGN KEY (user_id) REFERENCES hg_admin_member (id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- --------------------------------------------------------
+
 
 
 

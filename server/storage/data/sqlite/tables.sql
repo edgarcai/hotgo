@@ -654,3 +654,31 @@ CREATE UNIQUE INDEX `hg_sys_serve_license_appid` ON `hg_sys_serve_license` (`app
 CREATE INDEX `hg_sys_serve_log_member_id` ON `hg_sys_serve_log` (`level_format`);
 CREATE INDEX `hg_sys_serve_log_traceid` ON `hg_sys_serve_log` (`trace_id`);
 CREATE INDEX `hg_sys_sms_log_mobile` ON `hg_sys_sms_log` (`mobile`);
+
+CREATE TABLE `hg_user_two_factor` (                       -- 用户双因子认证表
+  `id` INTEGER PRIMARY KEY AUTOINCREMENT,                 -- 主键ID
+  `user_id` INTEGER NOT NULL,                             -- 用户ID，关联hg_admin_member.id
+  `secret_key` TEXT NOT NULL,                             -- 加密后的TOTP密钥
+  `is_enabled` INTEGER NOT NULL DEFAULT 0,               -- 是否启用2FA，0=禁用，1=启用
+  `backup_codes_count` INTEGER NOT NULL DEFAULT 0,       -- 剩余备用恢复码数量
+  `last_used_at` TEXT,                                    -- 最后使用时间
+  `created_at` TEXT NOT NULL,                             -- 创建时间
+  `updated_at` TEXT NOT NULL,                             -- 更新时间
+  UNIQUE(`user_id`)
+);
+
+CREATE INDEX `idx_user_two_factor_user_id` ON `hg_user_two_factor` (`user_id`);
+CREATE INDEX `idx_user_two_factor_is_enabled` ON `hg_user_two_factor` (`is_enabled`);
+
+CREATE TABLE `hg_user_two_factor_backup_codes` (          -- 用户双因子认证备用恢复码表
+  `id` INTEGER PRIMARY KEY AUTOINCREMENT,                 -- 主键ID
+  `user_id` INTEGER NOT NULL,                             -- 用户ID，关联hg_admin_member.id
+  `code_hash` TEXT NOT NULL,                              -- 备用恢复码的哈希值
+  `is_used` INTEGER NOT NULL DEFAULT 0,                  -- 是否已使用，0=未使用，1=已使用
+  `used_at` TEXT,                                         -- 使用时间
+  `created_at` TEXT NOT NULL                              -- 创建时间
+);
+
+CREATE INDEX `idx_user_two_factor_backup_codes_user_id` ON `hg_user_two_factor_backup_codes` (`user_id`);
+CREATE INDEX `idx_user_two_factor_backup_codes_is_used` ON `hg_user_two_factor_backup_codes` (`is_used`);
+CREATE INDEX `idx_user_two_factor_backup_codes_user_id_is_used` ON `hg_user_two_factor_backup_codes` (`user_id`, `is_used`);}]}}}

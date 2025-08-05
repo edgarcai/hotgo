@@ -49,6 +49,7 @@ func Admin(ctx context.Context, group *ghttp.RouterGroup) {
 			sys.SmsLog,       // 短信记录
 			sys.ServeLicense, // 服务许可证
 			admin.Member,     // 用户
+			admin.TwoFactor,  // 双因子认证
 			admin.Monitor,    // 监控
 			admin.Role,       // 路由
 			admin.Dept,       // 部门

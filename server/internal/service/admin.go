@@ -243,7 +243,7 @@ type (
 		GetSubRoleIds(ctx context.Context, roleId int64, isSuper bool) (ids []int64, err error)
 	}
 	IAdminSite interface {
-		// Register 账号注册
+		// Register 注册
 		Register(ctx context.Context, in *adminin.RegisterInp) (err error)
 		// AccountLogin 账号登录
 		AccountLogin(ctx context.Context, in *adminin.AccountLoginInp) (res *adminin.LoginModel, err error)
@@ -251,6 +251,20 @@ type (
 		MobileLogin(ctx context.Context, in *adminin.MobileLoginInp) (res *adminin.LoginModel, err error)
 		// BindUserContext 绑定用户上下文
 		BindUserContext(ctx context.Context, claims *model.Identity) (err error)
+	}
+	IAdminTwoFactor interface {
+		// Enable 启用双因子认证
+		Enable(ctx context.Context, in *adminin.TwoFactorEnableInp) (res *adminin.TwoFactorEnableModel, err error)
+		// ConfirmEnable 确认启用双因子认证
+		ConfirmEnable(ctx context.Context, in *adminin.TwoFactorConfirmEnableInp) (err error)
+		// Disable 禁用双因子认证
+		Disable(ctx context.Context, in *adminin.TwoFactorDisableInp) (err error)
+		// Verify 验证双因子认证
+		Verify(ctx context.Context, in *adminin.TwoFactorVerifyInp) (err error)
+		// GetStatus 获取双因子认证状态
+		GetStatus(ctx context.Context, in *adminin.TwoFactorGetStatusInp) (res *adminin.TwoFactorGetStatusModel, err error)
+		// RegenerateBackupCodes 重新生成备用恢复码
+		RegenerateBackupCodes(ctx context.Context, in *adminin.TwoFactorRegenerateBackupCodesInp) (res *adminin.TwoFactorRegenerateBackupCodesModel, err error)
 	}
 )
 
@@ -267,6 +281,7 @@ var (
 	localAdminPost       IAdminPost
 	localAdminRole       IAdminRole
 	localAdminSite       IAdminSite
+	localAdminTwoFactor  IAdminTwoFactor
 )
 
 func AdminCash() IAdminCash {
@@ -399,4 +414,15 @@ func AdminSite() IAdminSite {
 
 func RegisterAdminSite(i IAdminSite) {
 	localAdminSite = i
+}
+
+func AdminTwoFactor() IAdminTwoFactor {
+	if localAdminTwoFactor == nil {
+		panic("implement not found for interface IAdminTwoFactor, forgot register?")
+	}
+	return localAdminTwoFactor
+}
+
+func RegisterAdminTwoFactor(i IAdminTwoFactor) {
+	localAdminTwoFactor = i
 }

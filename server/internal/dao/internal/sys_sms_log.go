@@ -11,15 +11,14 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 )
 
-// SysSmsLogDao is the data access object for the table hg_sys_sms_log.
+// SysSmsLogDao is the data access object for table hg_sys_sms_log.
 type SysSmsLogDao struct {
-	table    string             // table is the underlying table name of the DAO.
-	group    string             // group is the database configuration group name of the current DAO.
-	columns  SysSmsLogColumns   // columns contains all the column names of Table for convenient usage.
-	handlers []gdb.ModelHandler // handlers for customized model modification.
+	table   string           // table is the underlying table name of the DAO.
+	group   string           // group is the database configuration group name of current DAO.
+	columns SysSmsLogColumns // columns contains all the column names of Table for convenient usage.
 }
 
-// SysSmsLogColumns defines and stores column names for the table hg_sys_sms_log.
+// SysSmsLogColumns defines and stores column names for table hg_sys_sms_log.
 type SysSmsLogColumns struct {
 	Id        string // 主键
 	Event     string // 事件
@@ -32,7 +31,7 @@ type SysSmsLogColumns struct {
 	UpdatedAt string // 更新时间
 }
 
-// sysSmsLogColumns holds the columns for the table hg_sys_sms_log.
+// sysSmsLogColumns holds the columns for table hg_sys_sms_log.
 var sysSmsLogColumns = SysSmsLogColumns{
 	Id:        "id",
 	Event:     "event",
@@ -46,49 +45,44 @@ var sysSmsLogColumns = SysSmsLogColumns{
 }
 
 // NewSysSmsLogDao creates and returns a new DAO object for table data access.
-func NewSysSmsLogDao(handlers ...gdb.ModelHandler) *SysSmsLogDao {
+func NewSysSmsLogDao() *SysSmsLogDao {
 	return &SysSmsLogDao{
-		group:    "default",
-		table:    "hg_sys_sms_log",
-		columns:  sysSmsLogColumns,
-		handlers: handlers,
+		group:   "default",
+		table:   "hg_sys_sms_log",
+		columns: sysSmsLogColumns,
 	}
 }
 
-// DB retrieves and returns the underlying raw database management object of the current DAO.
+// DB retrieves and returns the underlying raw database management object of current DAO.
 func (dao *SysSmsLogDao) DB() gdb.DB {
 	return g.DB(dao.group)
 }
 
-// Table returns the table name of the current DAO.
+// Table returns the table name of current dao.
 func (dao *SysSmsLogDao) Table() string {
 	return dao.table
 }
 
-// Columns returns all column names of the current DAO.
+// Columns returns all column names of current dao.
 func (dao *SysSmsLogDao) Columns() SysSmsLogColumns {
 	return dao.columns
 }
 
-// Group returns the database configuration group name of the current DAO.
+// Group returns the configuration group name of database of current dao.
 func (dao *SysSmsLogDao) Group() string {
 	return dao.group
 }
 
-// Ctx creates and returns a Model for the current DAO. It automatically sets the context for the current operation.
+// Ctx creates and returns the Model for current DAO, It automatically sets the context for current operation.
 func (dao *SysSmsLogDao) Ctx(ctx context.Context) *gdb.Model {
-	model := dao.DB().Model(dao.table)
-	for _, handler := range dao.handlers {
-		model = handler(model)
-	}
-	return model.Safe().Ctx(ctx)
+	return dao.DB().Model(dao.table).Safe().Ctx(ctx)
 }
 
 // Transaction wraps the transaction logic using function f.
-// It rolls back the transaction and returns the error if function f returns a non-nil error.
+// It rollbacks the transaction and returns the error from function f if it returns non-nil error.
 // It commits the transaction and returns nil if function f returns nil.
 //
-// Note: Do not commit or roll back the transaction in function f,
+// Note that, you should not Commit or Rollback the transaction in function f
 // as it is automatically handled by this function.
 func (dao *SysSmsLogDao) Transaction(ctx context.Context, f func(ctx context.Context, tx gdb.TX) error) (err error) {
 	return dao.Ctx(ctx).Transaction(ctx, f)

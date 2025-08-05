@@ -11,15 +11,14 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 )
 
-// AddonHgexampleTableDao is the data access object for the table hg_addon_hgexample_table.
+// AddonHgexampleTableDao is the data access object for table hg_addon_hgexample_table.
 type AddonHgexampleTableDao struct {
-	table    string                     // table is the underlying table name of the DAO.
-	group    string                     // group is the database configuration group name of the current DAO.
-	columns  AddonHgexampleTableColumns // columns contains all the column names of Table for convenient usage.
-	handlers []gdb.ModelHandler         // handlers for customized model modification.
+	table   string                     // table is the underlying table name of the DAO.
+	group   string                     // group is the database configuration group name of current DAO.
+	columns AddonHgexampleTableColumns // columns contains all the column names of Table for convenient usage.
 }
 
-// AddonHgexampleTableColumns defines and stores column names for the table hg_addon_hgexample_table.
+// AddonHgexampleTableColumns defines and stores column names for table hg_addon_hgexample_table.
 type AddonHgexampleTableColumns struct {
 	Id          string // ID
 	Pid         string // 上级ID
@@ -60,7 +59,7 @@ type AddonHgexampleTableColumns struct {
 	DeletedAt   string // 删除时间
 }
 
-// addonHgexampleTableColumns holds the columns for the table hg_addon_hgexample_table.
+// addonHgexampleTableColumns holds the columns for table hg_addon_hgexample_table.
 var addonHgexampleTableColumns = AddonHgexampleTableColumns{
 	Id:          "id",
 	Pid:         "pid",
@@ -102,49 +101,44 @@ var addonHgexampleTableColumns = AddonHgexampleTableColumns{
 }
 
 // NewAddonHgexampleTableDao creates and returns a new DAO object for table data access.
-func NewAddonHgexampleTableDao(handlers ...gdb.ModelHandler) *AddonHgexampleTableDao {
+func NewAddonHgexampleTableDao() *AddonHgexampleTableDao {
 	return &AddonHgexampleTableDao{
-		group:    "default",
-		table:    "hg_addon_hgexample_table",
-		columns:  addonHgexampleTableColumns,
-		handlers: handlers,
+		group:   "default",
+		table:   "hg_addon_hgexample_table",
+		columns: addonHgexampleTableColumns,
 	}
 }
 
-// DB retrieves and returns the underlying raw database management object of the current DAO.
+// DB retrieves and returns the underlying raw database management object of current DAO.
 func (dao *AddonHgexampleTableDao) DB() gdb.DB {
 	return g.DB(dao.group)
 }
 
-// Table returns the table name of the current DAO.
+// Table returns the table name of current dao.
 func (dao *AddonHgexampleTableDao) Table() string {
 	return dao.table
 }
 
-// Columns returns all column names of the current DAO.
+// Columns returns all column names of current dao.
 func (dao *AddonHgexampleTableDao) Columns() AddonHgexampleTableColumns {
 	return dao.columns
 }
 
-// Group returns the database configuration group name of the current DAO.
+// Group returns the configuration group name of database of current dao.
 func (dao *AddonHgexampleTableDao) Group() string {
 	return dao.group
 }
 
-// Ctx creates and returns a Model for the current DAO. It automatically sets the context for the current operation.
+// Ctx creates and returns the Model for current DAO, It automatically sets the context for current operation.
 func (dao *AddonHgexampleTableDao) Ctx(ctx context.Context) *gdb.Model {
-	model := dao.DB().Model(dao.table)
-	for _, handler := range dao.handlers {
-		model = handler(model)
-	}
-	return model.Safe().Ctx(ctx)
+	return dao.DB().Model(dao.table).Safe().Ctx(ctx)
 }
 
 // Transaction wraps the transaction logic using function f.
-// It rolls back the transaction and returns the error if function f returns a non-nil error.
+// It rollbacks the transaction and returns the error from function f if it returns non-nil error.
 // It commits the transaction and returns nil if function f returns nil.
 //
-// Note: Do not commit or roll back the transaction in function f,
+// Note that, you should not Commit or Rollback the transaction in function f
 // as it is automatically handled by this function.
 func (dao *AddonHgexampleTableDao) Transaction(ctx context.Context, f func(ctx context.Context, tx gdb.TX) error) (err error) {
 	return dao.Ctx(ctx).Transaction(ctx, f)

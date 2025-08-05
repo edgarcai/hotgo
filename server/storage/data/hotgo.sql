@@ -6202,6 +6202,58 @@ ALTER TABLE `hg_sys_sms_log`
 --
 ALTER TABLE `hg_test_category`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '分类ID',AUTO_INCREMENT=5;
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `hg_user_two_factor`
+--
+
+CREATE TABLE IF NOT EXISTS `hg_user_two_factor` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID，关联hg_admin_member.id',
+  `secret_key` varchar(255) NOT NULL COMMENT '加密后的TOTP密钥',
+  `is_enabled` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否启用2FA，0=禁用，1=启用',
+  `backup_codes_count` int(11) NOT NULL DEFAULT '0' COMMENT '剩余备用恢复码数量',
+  `last_used_at` datetime DEFAULT NULL COMMENT '最后使用时间',
+  `created_at` datetime NOT NULL COMMENT '创建时间',
+  `updated_at` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_user_id` (`user_id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_is_enabled` (`is_enabled`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户双因子认证表';
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `hg_user_two_factor_backup_codes`
+--
+
+CREATE TABLE IF NOT EXISTS `hg_user_two_factor_backup_codes` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID，关联hg_admin_member.id',
+  `code_hash` varchar(255) NOT NULL COMMENT '备用恢复码的哈希值',
+  `is_used` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否已使用，0=未使用，1=已使用',
+  `used_at` datetime DEFAULT NULL COMMENT '使用时间',
+  `created_at` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_is_used` (`is_used`),
+  KEY `idx_user_id_is_used` (`user_id`, `is_used`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户双因子认证备用恢复码表';
+
+--
+-- 为表 `hg_user_two_factor` 添加外键约束
+--
+ALTER TABLE `hg_user_two_factor`
+  ADD CONSTRAINT `fk_user_two_factor_user_id` FOREIGN KEY (`user_id`) REFERENCES `hg_admin_member` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 为表 `hg_user_two_factor_backup_codes` 添加外键约束
+--
+ALTER TABLE `hg_user_two_factor_backup_codes`
+  ADD CONSTRAINT `fk_user_two_factor_backup_codes_user_id` FOREIGN KEY (`user_id`) REFERENCES `hg_admin_member` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

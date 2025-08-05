@@ -11,15 +11,14 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 )
 
-// SysServeLogDao is the data access object for the table hg_sys_serve_log.
+// SysServeLogDao is the data access object for table hg_sys_serve_log.
 type SysServeLogDao struct {
-	table    string             // table is the underlying table name of the DAO.
-	group    string             // group is the database configuration group name of the current DAO.
-	columns  SysServeLogColumns // columns contains all the column names of Table for convenient usage.
-	handlers []gdb.ModelHandler // handlers for customized model modification.
+	table   string             // table is the underlying table name of the DAO.
+	group   string             // group is the database configuration group name of current DAO.
+	columns SysServeLogColumns // columns contains all the column names of Table for convenient usage.
 }
 
-// SysServeLogColumns defines and stores column names for the table hg_sys_serve_log.
+// SysServeLogColumns defines and stores column names for table hg_sys_serve_log.
 type SysServeLogColumns struct {
 	Id          string // 日志ID
 	TraceId     string // 链路ID
@@ -33,7 +32,7 @@ type SysServeLogColumns struct {
 	UpdatedAt   string // 修改时间
 }
 
-// sysServeLogColumns holds the columns for the table hg_sys_serve_log.
+// sysServeLogColumns holds the columns for table hg_sys_serve_log.
 var sysServeLogColumns = SysServeLogColumns{
 	Id:          "id",
 	TraceId:     "trace_id",
@@ -48,49 +47,44 @@ var sysServeLogColumns = SysServeLogColumns{
 }
 
 // NewSysServeLogDao creates and returns a new DAO object for table data access.
-func NewSysServeLogDao(handlers ...gdb.ModelHandler) *SysServeLogDao {
+func NewSysServeLogDao() *SysServeLogDao {
 	return &SysServeLogDao{
-		group:    "default",
-		table:    "hg_sys_serve_log",
-		columns:  sysServeLogColumns,
-		handlers: handlers,
+		group:   "default",
+		table:   "hg_sys_serve_log",
+		columns: sysServeLogColumns,
 	}
 }
 
-// DB retrieves and returns the underlying raw database management object of the current DAO.
+// DB retrieves and returns the underlying raw database management object of current DAO.
 func (dao *SysServeLogDao) DB() gdb.DB {
 	return g.DB(dao.group)
 }
 
-// Table returns the table name of the current DAO.
+// Table returns the table name of current dao.
 func (dao *SysServeLogDao) Table() string {
 	return dao.table
 }
 
-// Columns returns all column names of the current DAO.
+// Columns returns all column names of current dao.
 func (dao *SysServeLogDao) Columns() SysServeLogColumns {
 	return dao.columns
 }
 
-// Group returns the database configuration group name of the current DAO.
+// Group returns the configuration group name of database of current dao.
 func (dao *SysServeLogDao) Group() string {
 	return dao.group
 }
 
-// Ctx creates and returns a Model for the current DAO. It automatically sets the context for the current operation.
+// Ctx creates and returns the Model for current DAO, It automatically sets the context for current operation.
 func (dao *SysServeLogDao) Ctx(ctx context.Context) *gdb.Model {
-	model := dao.DB().Model(dao.table)
-	for _, handler := range dao.handlers {
-		model = handler(model)
-	}
-	return model.Safe().Ctx(ctx)
+	return dao.DB().Model(dao.table).Safe().Ctx(ctx)
 }
 
 // Transaction wraps the transaction logic using function f.
-// It rolls back the transaction and returns the error if function f returns a non-nil error.
+// It rollbacks the transaction and returns the error from function f if it returns non-nil error.
 // It commits the transaction and returns nil if function f returns nil.
 //
-// Note: Do not commit or roll back the transaction in function f,
+// Note that, you should not Commit or Rollback the transaction in function f
 // as it is automatically handled by this function.
 func (dao *SysServeLogDao) Transaction(ctx context.Context, f func(ctx context.Context, tx gdb.TX) error) (err error) {
 	return dao.Ctx(ctx).Transaction(ctx, f)
