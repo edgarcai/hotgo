@@ -27,7 +27,7 @@
       class="layout-side-drawer"
     >
       <Logo :collapsed="collapsed" />
-      <AsideMenu @clickMenuItem="collapsed = false" />
+      <AsideMenu @click-menu-item="collapsed = false" />
     </n-drawer>
 
     <n-layout :inverted="inverted">
@@ -105,7 +105,6 @@
     const { fixed } = unref(getHeaderSetting);
     return fixed ? 'absolute' : 'static';
   });
-
 
   const isMixMenuNoneSub = computed(() => {
     const mixMenu = settingStore.menuSetting.mixMenu;

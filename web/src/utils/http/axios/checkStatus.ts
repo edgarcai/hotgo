@@ -1,12 +1,28 @@
 export function checkStatus(status: number, msg: string): void {
   const $message = window['$message'];
+  const $dialog = window['$dialog'];
   switch (status) {
     case 400:
       $message.error(msg);
       break;
-    // 401: 未登录
+    // 401: 未登录 - token过期或无效
     // 未登录则跳转登录页面，并携带当前页面的路径
     // 在登录成功后返回当前页面，这一步需要在登录页操作。
+    case 401:
+      const { storage } = require('@/utils/Storage');
+      const { PageEnum } = require('@/enums/pageEnum');
+      $dialog.warning({
+        title: '登录状态已过期',
+        content: '您的登录状态已过期，请重新登录',
+        positiveText: '重新登录',
+        closable: false,
+        maskClosable: false,
+        onPositiveClick: () => {
+          storage.clear();
+          window.location.href = PageEnum.BASE_LOGIN;
+        }
+      });
+      break;
     case 61:
       $message.error('用户没有权限（令牌、用户名、密码错误）!');
       break;

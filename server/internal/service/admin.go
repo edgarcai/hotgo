@@ -258,7 +258,7 @@ type (
 		// Enable 启用双因子认证
 		Enable(ctx context.Context, in *adminin.TwoFactorEnableInp) (res *adminin.TwoFactorEnableModel, err error)
 		// ConfirmEnable 确认启用双因子认证
-		ConfirmEnable(ctx context.Context, in *adminin.TwoFactorConfirmEnableInp) (err error)
+		ConfirmEnable(ctx context.Context, in *adminin.TwoFactorConfirmEnableInp) (res *adminin.TwoFactorConfirmEnableModel, err error)
 		// Disable 禁用双因子认证
 		Disable(ctx context.Context, in *adminin.TwoFactorDisableInp) (err error)
 		// Verify 验证双因子认证

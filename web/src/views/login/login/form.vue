@@ -113,7 +113,7 @@
         登录
       </n-button>
 
-      <FormOther moduleKey="register" tag="注册账号" @updateActiveModule="updateActiveModule" />
+      <FormOther moduleKey="register" tag="注册账号" @update-active-module="updateActiveModule" />
     </n-space>
 
     <DemoAccount @login="handleDemoAccountLogin" />
@@ -301,8 +301,8 @@
               tempToken: data.tempToken,
               username: data.username || formInline.value.username,
               avatar: data.avatar || '',
-              redirect: route.query?.redirect || '/'
-            }
+              redirect: route.query?.redirect || '/',
+            },
           });
         } else {
           // 直接登录成功

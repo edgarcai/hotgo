@@ -10,7 +10,6 @@ package admin
 import (
 	"context"
 	"fmt"
-	"github.com/gogf/gf/v2/errors/gerror"
 	"hotgo/internal/consts"
 	"hotgo/internal/dao"
 	"hotgo/internal/library/hgorm/handler"
@@ -22,6 +21,8 @@ import (
 	"hotgo/utility/convert"
 	"hotgo/utility/excel"
 	"hotgo/utility/validate"
+
+	"github.com/gogf/gf/v2/errors/gerror"
 
 	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/os/gctx"
@@ -177,7 +178,8 @@ func (s *sAdminCreditsLog) List(ctx context.Context, in *adminin.CreditsLogListI
 
 	// 用户筛选
 	if len(in.ComplexMemberId) == 2 && len(in.ComplexMemberId[0]) > 0 {
-		memberIds, err := service.AdminMember().GetComplexMemberIds(ctx, in.ComplexMemberId[0], in.ComplexMemberId[1])
+		var memberIds []int64
+		memberIds, err = service.AdminMember().GetComplexMemberIds(ctx, in.ComplexMemberId[0], in.ComplexMemberId[1])
 		if err != nil {
 			return nil, 0, err
 		}

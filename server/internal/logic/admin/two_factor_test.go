@@ -65,7 +65,7 @@ func TestTwoFactorConfirmEnable(t *testing.T) {
 		// 调用确认启用方法
 		// 注意：这个测试可能会失败，因为验证码不正确
 		// 在实际项目中，你可能需要模拟TOTP验证过程
-		err = service.AdminTwoFactor().ConfirmEnable(ctx, confirmInput)
+		_, err = service.AdminTwoFactor().ConfirmEnable(ctx, confirmInput)
 		// 由于使用了固定的验证码，这里可能会失败
 		// assert.NoError(t, err)
 		
@@ -75,7 +75,7 @@ func TestTwoFactorConfirmEnable(t *testing.T) {
 			Code:   "", // 空验证码
 		}
 		
-		err = service.AdminTwoFactor().ConfirmEnable(ctx, invalidInput)
+		_, err = service.AdminTwoFactor().ConfirmEnable(ctx, invalidInput)
 		assert.Error(t, err) // 应该返回错误
 	})
 }
@@ -209,7 +209,7 @@ func TestTwoFactorInputValidation(t *testing.T) {
 			Code:   "abc", // 无效格式
 		}
 		
-		err := service.AdminTwoFactor().ConfirmEnable(ctx, invalidConfirmInput)
+		_, err := service.AdminTwoFactor().ConfirmEnable(ctx, invalidConfirmInput)
 		assert.Error(t, err)
 		
 		// 测试空验证码
@@ -218,7 +218,7 @@ func TestTwoFactorInputValidation(t *testing.T) {
 			Code:   "", // 空验证码
 		}
 		
-		err = service.AdminTwoFactor().ConfirmEnable(ctx, emptyCodeInput)
+		_, err = service.AdminTwoFactor().ConfirmEnable(ctx, emptyCodeInput)
 		assert.Error(t, err)
 	})
 }

@@ -209,6 +209,11 @@ func (s *sMiddleware) IsExcept2FA(ctx context.Context, path string) bool {
 		"/auth/verify-login-2fa", // 2FA验证接口
 		"/auth/login",           // 登录接口
 		"/auth/logout",          // 登出接口
+		"/auth/2fa-status",      // 2FA状态查询接口
+		"/auth/enable-2fa",      // 启用2FA接口
+		"/auth/verify-2fa-setup", // 验证2FA设置接口
+		"/auth/disable-2fa",     // 禁用2FA接口
+		"/auth/regenerate-backup-codes", // 重新生成备用码接口
 		"/two-factor",           // 2FA管理相关接口
 	}
 

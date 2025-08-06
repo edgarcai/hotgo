@@ -13,7 +13,9 @@ import (
 // Enable2FAReq 启用双因子认证请求
 type Enable2FAReq struct {
 	g.Meta `path:"/api/admin/auth/enable-2fa" method:"post" tags:"管理员认证" summary:"启用双因子认证"`
-	adminin.TwoFactorEnableInp
+	// 不需要UserId参数，从用户上下文中获取
+	UserId   int64  `json:"-" dc:"用户ID（从上下文获取）"`
+	Password string `json:"password" v:"required#密码不能为空" dc:"当前密码"`
 }
 
 type Enable2FARes struct {
@@ -23,15 +25,21 @@ type Enable2FARes struct {
 // Verify2FASetupReq 验证双因子认证设置请求
 type Verify2FASetupReq struct {
 	g.Meta `path:"/api/admin/auth/verify-2fa-setup" method:"post" tags:"管理员认证" summary:"验证双因子认证设置"`
-	adminin.TwoFactorConfirmEnableInp
+	// 不需要UserId参数，从用户上下文中获取
+	UserId int64 `json:"-" dc:"用户ID（从上下文获取）"`
+	Code   string `json:"code" v:"required|length:6,6#请输入验证码|验证码必须为6位" dc:"TOTP验证码"`
 }
 
-type Verify2FASetupRes struct{}
+type Verify2FASetupRes struct {
+	*adminin.TwoFactorConfirmEnableModel
+}
 
 // Disable2FAReq 禁用双因子认证请求
 type Disable2FAReq struct {
 	g.Meta `path:"/api/admin/auth/disable-2fa" method:"post" tags:"管理员认证" summary:"禁用双因子认证"`
-	adminin.TwoFactorDisableInp
+	// 不需要UserId参数，从用户上下文中获取
+	UserId int64 `json:"-" dc:"用户ID（从上下文获取）"`
+	Code   string `json:"code" v:"required#验证码不能为空" dc:"TOTP验证码或备用恢复码"`
 }
 
 type Disable2FARes struct{}
@@ -39,7 +47,8 @@ type Disable2FARes struct{}
 // Get2FAStatusReq 获取双因子认证状态请求
 type Get2FAStatusReq struct {
 	g.Meta `path:"/api/admin/auth/2fa-status" method:"get" tags:"管理员认证" summary:"获取双因子认证状态"`
-	adminin.TwoFactorGetStatusInp
+	// 不需要UserId参数，从用户上下文中获取
+	UserId int64 `json:"-" dc:"用户ID（从上下文获取）"`
 }
 
 type Get2FAStatusRes struct {

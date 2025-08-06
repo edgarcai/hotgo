@@ -213,6 +213,15 @@ export const useUserStore = defineStore({
             const result = res;
             that.setConfig(result);
             storage.set(CURRENT_CONFIG, result);
+            // 配置加载完成后，如果用户已登录，则初始化WebSocket
+            if (that.token && result.wsAddr) {
+              // 动态导入WebSocket模块并初始化
+              import('@/utils/websocket/index').then((websocketModule) => {
+                websocketModule.default();
+              }).catch((error) => {
+                console.error('[WebSocket] 初始化失败:', error);
+              });
+            }
             resolve(res);
           })
           .catch((error) => {

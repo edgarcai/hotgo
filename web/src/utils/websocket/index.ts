@@ -50,8 +50,8 @@ export default () => {
   const createSocket = () => {
     console.log('[WebSocket] createSocket...');
     if (useUserStore.token === '' || useUserStore.config?.wsAddr == '') {
-      console.error('[WebSocket] 用户未登录，稍后重试...');
-      resetReconnect();
+      console.log('[WebSocket] 用户未登录或配置未加载，等待用户登录...');
+      // 不进行重连，等待用户登录后手动初始化
       return;
     }
     try {

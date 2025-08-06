@@ -61,8 +61,11 @@ func (s *sTwoFactor) Enable(ctx context.Context, in *adminin.TwoFactorEnableInp)
 		return nil, err
 	}
 
-	// 生成二维码URL
-	qrCodeURL := s.totpService.GetQRCodeURL(key)
+	// 生成二维码图片（base64编码）
+	qrCodeURL, err := s.totpService.GenerateQRCodeImage(key)
+	if err != nil {
+		return nil, err
+	}
 
 	// 格式化密钥用于显示
 	formattedSecret := s.totpService.FormatSecret(key.Secret())
@@ -102,41 +105,62 @@ func (s *sTwoFactor) Enable(ctx context.Context, in *adminin.TwoFactorEnableInp)
 }
 
 // ConfirmEnable 确认启用双因子认证
-func (s *sTwoFactor) ConfirmEnable(ctx context.Context, in *adminin.TwoFactorConfirmEnableInp) (err error) {
+func (s *sTwoFactor) ConfirmEnable(ctx context.Context, in *adminin.TwoFactorConfirmEnableInp) (res *adminin.TwoFactorConfirmEnableModel, err error) {
 	// 获取用户的2FA记录
 	record, err := dao.AdminTwoFactor.Ctx(ctx).Where("member_id", in.UserId).One()
 	if err != nil {
-		return err
+		return nil, err
 	}
 	if record.IsEmpty() {
-		return gerror.New("双因子认证未初始化")
+		return nil, gerror.New("双因子认证未初始化")
 	}
 
 	// 检查是否已启用
 	if record["is_enabled"].Bool() {
-		return gerror.New("双因子认证已启用")
+		return nil, gerror.New("双因子认证已启用")
 	}
 
 	// 解密密钥
 	encryptedSecret := record["secret_key"].String()
 	secret, err := s.cryptoService.DecryptSecret(encryptedSecret)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	// 验证TOTP代码
 	valid := s.totpService.ValidateCode(secret, in.Code)
 	if !valid {
-		return gerror.New("验证码错误")
+		return nil, gerror.New("验证码错误")
 	}
 
-	// 启用2FA
-	_, err = dao.AdminTwoFactor.Ctx(ctx).Where("member_id", in.UserId).Data(do.AdminTwoFactor{
-		IsEnabled: 1,
-		UpdatedAt: gtime.Now(),
-	}).Update()
+	// 由于备用码已经被哈希，我们需要重新生成新的备用码
+	// 这样用户可以在启用后立即获得可用的备用码
+	backupCodes := s.totpService.GenerateBackupCodes(8)
 
-	return err
+	// 哈希新的备用恢复码
+	newHashedCodes := make([]string, len(backupCodes))
+	for i, code := range backupCodes {
+		newHashedCodes[i], err = s.cryptoService.HashBackupCode(code)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	// 启用2FA并更新备用码
+	_, err = dao.AdminTwoFactor.Ctx(ctx).Where("member_id", in.UserId).Data(do.AdminTwoFactor{
+		IsEnabled:   1,
+		BackupCodes: gjson.New(newHashedCodes),
+		UpdatedAt:   gtime.Now(),
+	}).Update()
+	if err != nil {
+		return nil, err
+	}
+
+	// 返回备用码给用户
+	res = &adminin.TwoFactorConfirmEnableModel{
+		BackupCodes: backupCodes,
+	}
+	return res, nil
 }
 
 // Disable 禁用双因子认证

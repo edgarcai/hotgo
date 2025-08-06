@@ -8,12 +8,14 @@ package totp
 import (
 	"crypto/rand"
 	"encoding/base32"
+	"encoding/base64"
 	"fmt"
 	"strings"
 	"time"
 
 	"github.com/pquerna/otp"
 	"github.com/pquerna/otp/totp"
+	"github.com/skip2/go-qrcode"
 )
 
 // Service TOTP服务
@@ -80,6 +82,22 @@ func (s *Service) generateRandomCode(length int) string {
 // GetQRCodeURL 获取二维码URL
 func (s *Service) GetQRCodeURL(key *otp.Key) string {
 	return key.URL()
+}
+
+// GenerateQRCodeImage 生成二维码图片（base64编码）
+// 返回 data:image/png;base64,... 格式的字符串，可直接用于 img 标签的 src 属性
+func (s *Service) GenerateQRCodeImage(key *otp.Key) (string, error) {
+	// 生成二维码图片字节数据
+	qrBytes, err := qrcode.Encode(key.URL(), qrcode.Medium, 256)
+	if err != nil {
+		return "", fmt.Errorf("生成二维码失败: %v", err)
+	}
+
+	// 转换为base64编码
+	base64Str := base64.StdEncoding.EncodeToString(qrBytes)
+
+	// 返回完整的data URL格式
+	return fmt.Sprintf("data:image/png;base64,%s", base64Str), nil
 }
 
 // FormatSecret 格式化密钥显示

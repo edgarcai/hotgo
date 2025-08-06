@@ -99,17 +99,17 @@ const transform: AxiosTransform = {
       case ResultEnum.ERROR:
         $message.error(errorMsg);
         break;
-      // 登录超时
+      // 登录超时或未授权
       case ResultEnum.TIMEOUT:
         const LoginName = PageEnum.BASE_LOGIN_NAME;
         const LoginPath = PageEnum.BASE_LOGIN;
         if (router.currentRoute.value.name === LoginName) return;
         // 到登录页
-        errorMsg = message ?? '登录超时，请重新登录!';
+        errorMsg = message ?? '登录状态已过期，请重新登录!';
         $dialog.warning({
-          title: '提示',
-          content: errorMsg, // '登录身份已失效，请重新登录!',
-          positiveText: '确定',
+          title: '登录状态已过期',
+          content: errorMsg,
+          positiveText: '重新登录',
           //negativeText: '取消',
           closable: false,
           maskClosable: false,

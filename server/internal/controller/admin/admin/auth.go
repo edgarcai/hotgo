@@ -7,8 +7,6 @@ package admin
 
 import (
 	"context"
-	"github.com/gogf/gf/v2/errors/gerror"
-	"github.com/gogf/gf/v2/net/ghttp"
 	"hotgo/api/admin/auth"
 	"hotgo/internal/consts"
 	"hotgo/internal/dao"
@@ -19,6 +17,10 @@ import (
 	"hotgo/internal/model/input/adminin"
 	"hotgo/internal/model/input/sysin"
 	"hotgo/internal/service"
+
+	"github.com/gogf/gf/v2/crypto/gmd5"
+	"github.com/gogf/gf/v2/errors/gerror"
+	"github.com/gogf/gf/v2/net/ghttp"
 )
 
 var (
@@ -35,8 +37,21 @@ func (c *cAuth) Enable2FA(ctx context.Context, req *auth.Enable2FAReq) (res *aut
 		return nil, gerror.New("用户未登录")
 	}
 
-	req.UserId = memberId
-	result, err := service.AdminTwoFactor().Enable(ctx, &req.TwoFactorEnableInp)
+	// 验证当前密码
+	var mb entity.AdminMember
+	if err = dao.AdminMember.Ctx(ctx).WherePri(memberId).Scan(&mb); err != nil {
+		return nil, gerror.Wrap(err, "获取用户信息失败，请稍后重试！")
+	}
+
+	if gmd5.MustEncryptString(req.Password+mb.Salt) != mb.PasswordHash {
+		return nil, gerror.New("密码不正确")
+	}
+
+	// 创建输入参数
+	input := &adminin.TwoFactorEnableInp{
+		UserId: memberId,
+	}
+	result, err := service.AdminTwoFactor().Enable(ctx, input)
 	if err != nil {
 		return nil, err
 	}
@@ -55,8 +70,19 @@ func (c *cAuth) Verify2FASetup(ctx context.Context, req *auth.Verify2FASetupReq)
 		return nil, gerror.New("用户未登录")
 	}
 
-	req.UserId = memberId
-	err = service.AdminTwoFactor().ConfirmEnable(ctx, &req.TwoFactorConfirmEnableInp)
+	// 创建输入参数
+	input := &adminin.TwoFactorConfirmEnableInp{
+		UserId: memberId,
+		Code:   req.Code,
+	}
+	result, err := service.AdminTwoFactor().ConfirmEnable(ctx, input)
+	if err != nil {
+		return nil, err
+	}
+
+	res = &auth.Verify2FASetupRes{
+		TwoFactorConfirmEnableModel: result,
+	}
 	return
 }
 
@@ -68,8 +94,12 @@ func (c *cAuth) Disable2FA(ctx context.Context, req *auth.Disable2FAReq) (res *a
 		return nil, gerror.New("用户未登录")
 	}
 
-	req.UserId = memberId
-	err = service.AdminTwoFactor().Disable(ctx, &req.TwoFactorDisableInp)
+	// 创建输入参数
+	input := &adminin.TwoFactorDisableInp{
+		UserId: memberId,
+		Code:   req.Code,
+	}
+	err = service.AdminTwoFactor().Disable(ctx, input)
 	return
 }
 
@@ -81,8 +111,11 @@ func (c *cAuth) Get2FAStatus(ctx context.Context, req *auth.Get2FAStatusReq) (re
 		return nil, gerror.New("用户未登录")
 	}
 
-	req.UserId = memberId
-	result, err := service.AdminTwoFactor().GetStatus(ctx, &req.TwoFactorGetStatusInp)
+	// 创建输入参数
+	input := &adminin.TwoFactorGetStatusInp{
+		UserId: memberId,
+	}
+	result, err := service.AdminTwoFactor().GetStatus(ctx, input)
 	if err != nil {
 		return nil, err
 	}
@@ -132,11 +165,11 @@ func (c *cAuth) Verify2FA(ctx context.Context, req *auth.Verify2FAReq) (res *aut
 }
 
 // verifyTempToken 验证临时token
-func (c *cAuth) verifyTempToken(ctx context.Context, tempToken string) (*model.Identity, error) {
+func (c *cAuth) verifyTempToken(tempToken string) (*model.Identity, error) {
 	// 创建一个临时请求来解析token
 	req := &ghttp.Request{}
 	req.Header.Set("Authorization", "Bearer "+tempToken)
-	
+
 	// 解析临时token
 	claims, err := token.ParseLoginUser(req)
 	if err != nil {
@@ -155,15 +188,15 @@ func (c *cAuth) verifyTempToken(ctx context.Context, tempToken string) (*model.I
 // VerifyLogin2FA 验证登录2FA
 func (c *cAuth) VerifyLogin2FA(ctx context.Context, req *auth.VerifyLogin2FAReq) (res *auth.VerifyLogin2FARes, err error) {
 	// 验证临时token
-	userInfo, err := c.verifyTempToken(ctx, req.TempToken)
+	userInfo, err := c.verifyTempToken(req.TempToken)
 	if err != nil {
 		// 记录2FA验证失败日志 - 临时token验证失败
 		service.SysLoginLog().Push(ctx, &sysin.LoginLogPushInp{
-			Response:          &adminin.LoginModel{Username: "unknown"},
+			Response:         &adminin.LoginModel{Username: "unknown"},
 			Err:              gerror.New("2FA验证失败: 临时token无效"),
-			TwoFactorEnabled:  true,
-			TwoFactorMethod:   req.CodeType,
-			TwoFactorSuccess:  false,
+			TwoFactorEnabled: true,
+			TwoFactorMethod:  req.CodeType,
+			TwoFactorSuccess: false,
 			LoginStep:        "2fa_verification_failed",
 		})
 		return
@@ -179,11 +212,11 @@ func (c *cAuth) VerifyLogin2FA(ctx context.Context, req *auth.VerifyLogin2FAReq)
 	if err != nil {
 		// 记录2FA验证失败日志 - 验证码错误
 		service.SysLoginLog().Push(ctx, &sysin.LoginLogPushInp{
-			Response:          &adminin.LoginModel{Id: userInfo.Id, Username: userInfo.Username},
+			Response:         &adminin.LoginModel{Id: userInfo.Id, Username: userInfo.Username},
 			Err:              gerror.Newf("2FA验证失败: %s", err.Error()),
-			TwoFactorEnabled:  true,
-			TwoFactorMethod:   req.CodeType,
-			TwoFactorSuccess:  false,
+			TwoFactorEnabled: true,
+			TwoFactorMethod:  req.CodeType,
+			TwoFactorSuccess: false,
 			LoginStep:        "2fa_verification_failed",
 		})
 		return
@@ -209,11 +242,11 @@ func (c *cAuth) VerifyLogin2FA(ctx context.Context, req *auth.VerifyLogin2FAReq)
 
 	// 记录2FA验证成功日志
 	service.SysLoginLog().Push(ctx, &sysin.LoginLogPushInp{
-		Response:          loginData,
+		Response:         loginData,
 		Err:              nil,
-		TwoFactorEnabled:  true,
-		TwoFactorMethod:   req.CodeType,
-		TwoFactorSuccess:  true,
+		TwoFactorEnabled: true,
+		TwoFactorMethod:  req.CodeType,
+		TwoFactorSuccess: true,
 		LoginStep:        "login_complete",
 	})
 

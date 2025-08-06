@@ -16,7 +16,7 @@ type TwoFactorEnableInp struct {
 // TwoFactorEnableModel 启用双因子认证输出
 type TwoFactorEnableModel struct {
 	Secret      string   `json:"secret"      dc:"密钥（格式化显示）"`
-	QRCodeURL   string   `json:"qrCodeURL"   dc:"二维码URL"`
+	QRCodeURL   string   `json:"qrCodeUrl"   dc:"二维码URL"`
 	BackupCodes []string `json:"backupCodes" dc:"备用恢复码"`
 }
 
@@ -24,6 +24,11 @@ type TwoFactorEnableModel struct {
 type TwoFactorConfirmEnableInp struct {
 	UserId int64  `json:"userId" v:"required#用户ID不能为空" dc:"用户ID"`
 	Code   string `json:"code" v:"required|length:6,6#请输入验证码|验证码必须为6位" dc:"TOTP验证码"`
+}
+
+// TwoFactorConfirmEnableModel 确认启用双因子认证输出
+type TwoFactorConfirmEnableModel struct {
+	BackupCodes []string `json:"backupCodes" dc:"备用恢复码列表"`
 }
 
 // TwoFactorDisableInp 禁用双因子认证输入

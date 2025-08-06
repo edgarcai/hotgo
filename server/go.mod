@@ -31,6 +31,7 @@ require (
 	github.com/schollz/progressbar/v3 v3.18.0
 	github.com/shirou/gopsutil/v3 v3.24.5
 	github.com/silenceper/wechat/v2 v2.1.9
+	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/stretchr/testify v1.10.0
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.1202
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sms v1.0.1200

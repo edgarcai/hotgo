@@ -10,11 +10,12 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/gogf/gf/v2/test/gtest"
 	"hotgo/api/admin/auth"
 	"hotgo/internal/consts"
 	"hotgo/internal/model"
 	"hotgo/internal/model/input/adminin"
+
+	"github.com/gogf/gf/v2/test/gtest"
 )
 
 // TestAuth_Enable2FA 测试启用双因子认证
@@ -22,16 +23,15 @@ func TestAuth_Enable2FA(t *testing.T) {
 	gtest.C(t, func(t *gtest.T) {
 		// 创建测试请求
 		req := &auth.Enable2FAReq{
-			TwoFactorEnableInp: adminin.TwoFactorEnableInp{
-				UserId: 1,
-			},
+			UserId:   1,
+			Password: "test123",
 		}
 
 		// 创建测试上下文，模拟用户登录
 		ctx := context.Background()
 		mockContext := &model.Context{
 			User: &model.Identity{
-				Id: 1,
+				Id:       1,
 				Username: "test_user",
 			},
 		}
@@ -54,17 +54,15 @@ func TestAuth_Verify2FASetup(t *testing.T) {
 	gtest.C(t, func(t *gtest.T) {
 		// 创建测试请求
 		req := &auth.Verify2FASetupReq{
-			TwoFactorConfirmEnableInp: adminin.TwoFactorConfirmEnableInp{
-				UserId: 1,
-				Code:   "123456",
-			},
+			UserId: 1,
+			Code:   "123456",
 		}
 
 		// 创建测试上下文，模拟用户登录
 		ctx := context.Background()
 		mockContext := &model.Context{
 			User: &model.Identity{
-				Id: 1,
+				Id:       1,
 				Username: "test_user",
 			},
 		}
@@ -85,17 +83,15 @@ func TestAuth_Disable2FA(t *testing.T) {
 	gtest.C(t, func(t *gtest.T) {
 		// 创建测试请求
 		req := &auth.Disable2FAReq{
-			TwoFactorDisableInp: adminin.TwoFactorDisableInp{
-				UserId: 1,
-				Code:   "123456",
-			},
+			UserId: 1,
+			Code:   "123456",
 		}
 
 		// 创建测试上下文，模拟用户登录
 		ctx := context.Background()
 		mockContext := &model.Context{
 			User: &model.Identity{
-				Id: 1,
+				Id:       1,
 				Username: "test_user",
 			},
 		}
@@ -116,16 +112,14 @@ func TestAuth_Get2FAStatus(t *testing.T) {
 	gtest.C(t, func(t *gtest.T) {
 		// 创建测试请求
 		req := &auth.Get2FAStatusReq{
-			TwoFactorGetStatusInp: adminin.TwoFactorGetStatusInp{
-				UserId: 1,
-			},
+			UserId: 1,
 		}
 
 		// 创建测试上下文，模拟用户登录
 		ctx := context.Background()
 		mockContext := &model.Context{
 			User: &model.Identity{
-				Id: 1,
+				Id:       1,
 				Username: "test_user",
 			},
 		}
@@ -156,7 +150,7 @@ func TestAuth_RegenerateBackupCodes(t *testing.T) {
 		ctx := context.Background()
 		mockContext := &model.Context{
 			User: &model.Identity{
-				Id: 1,
+				Id:       1,
 				Username: "test_user",
 			},
 		}
@@ -187,7 +181,7 @@ func TestAuth_Verify2FA(t *testing.T) {
 		ctx := context.Background()
 		mockContext := &model.Context{
 			User: &model.Identity{
-				Id: 1,
+				Id:       1,
 				Username: "test_user",
 			},
 		}

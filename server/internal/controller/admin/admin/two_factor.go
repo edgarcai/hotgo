@@ -48,7 +48,7 @@ func (c *cTwoFactor) ConfirmEnable(ctx context.Context, req *twofactor.ConfirmEn
 	}
 
 	req.UserId = memberId
-	err = service.AdminTwoFactor().ConfirmEnable(ctx, &req.TwoFactorConfirmEnableInp)
+	_, err = service.AdminTwoFactor().ConfirmEnable(ctx, &req.TwoFactorConfirmEnableInp)
 	return
 }
 
