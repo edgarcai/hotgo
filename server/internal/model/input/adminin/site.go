@@ -33,10 +33,12 @@ func (in *RegisterInp) Filter(ctx context.Context) (err error) {
 
 // LoginModel 统一登录响应
 type LoginModel struct {
-	Id       int64  `json:"id"              dc:"用户ID"`
-	Username string `json:"username"        dc:"用户名"`
-	Token    string `json:"token"           dc:"登录token"`
-	Expires  int64  `json:"expires"         dc:"登录有效期"`
+	Id                int64  `json:"id"              dc:"用户ID"`
+	Username          string `json:"username"        dc:"用户名"`
+	Token             string `json:"token"           dc:"登录token"`
+	Expires           int64  `json:"expires"         dc:"登录有效期"`
+	RequiresTwoFactor bool   `json:"requiresTwoFactor,omitempty" dc:"是否需要双因素认证"`
+	TempToken         string `json:"tempToken,omitempty" dc:"临时token用于2FA验证"`
 }
 
 // AccountLoginInp 账号登录

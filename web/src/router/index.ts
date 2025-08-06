@@ -39,11 +39,20 @@ export const LoginRoute: RouteRecordRaw = {
   },
 };
 
+export const Verify2FARoute: RouteRecordRaw = {
+  path: '/verify-2fa',
+  name: 'Verify2FA',
+  component: () => import('@/views/auth/Verify2FA.vue'),
+  meta: {
+    title: '双因素认证验证',
+  },
+};
+
 //需要验证权限
 export const asyncRoutes = [...routeModuleList];
 
 //普通路由 无需验证权限
-export const constantRouter: any[] = [LoginRoute, RootRoute, RedirectRoute];
+export const constantRouter: any[] = [LoginRoute, Verify2FARoute, RootRoute, RedirectRoute];
 
 const router = createRouter({
   history: createWebHashHistory(''),

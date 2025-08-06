@@ -65,3 +65,15 @@ type Verify2FAReq struct {
 type Verify2FARes struct {
 	*adminin.TwoFactorVerifyModel
 }
+
+// VerifyLogin2FAReq 验证登录双因子认证请求
+type VerifyLogin2FAReq struct {
+	g.Meta `path:"/api/admin/auth/verify-login-2fa" method:"post" tags:"管理员认证" summary:"验证登录双因子认证"`
+	TempToken string `json:"tempToken" v:"required#临时token不能为空" dc:"临时token"`
+	Code      string `json:"code" v:"required#验证码不能为空" dc:"验证码（TOTP或备用码）"`
+	CodeType  string `json:"codeType" v:"required|in:totp,backup#验证码类型不能为空|验证码类型必须是totp或backup" dc:"验证码类型：totp或backup"`
+}
+
+type VerifyLogin2FARes struct {
+	*adminin.LoginModel
+}

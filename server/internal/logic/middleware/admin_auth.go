@@ -36,6 +36,14 @@ func (s *sMiddleware) AdminAuth(r *ghttp.Request) {
 		return
 	}
 
+	// 检查2FA验证状态（排除2FA相关路由）
+	if !s.IsExcept2FA(ctx, path) {
+		if err := s.Check2FAVerification(r); err != nil {
+			response.JsonExit(r, gcode.CodeSecurityReason.Code(), err.Error())
+			return
+		}
+	}
+
 	// 不需要验证权限的路由地址
 	if s.IsExceptAuth(ctx, consts.AppAdmin, path) {
 		r.Middleware.Next()

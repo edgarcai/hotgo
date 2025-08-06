@@ -288,15 +288,31 @@
     message.loading('登录中...');
     loading.value = true;
     try {
-      const { code, message: msg } = await request;
+      const { code, message: msg, data } = await request;
       message.destroyAll();
       if (code == ResultEnum.SUCCESS) {
-        const toPath = decodeURIComponent((route.query?.redirect || '/') as string);
-        message.success('登录成功，即将进入系统');
-        if (route.name === LOGIN_NAME) {
-          await router.replace('/');
+        // 检查是否需要2FA验证
+        if (data?.requiresTwoFactor && data?.tempToken) {
+          message.success('密码验证成功，请完成双因素认证');
+          // 跳转到2FA验证页面
+          await router.push({
+            path: '/verify-2fa',
+            query: {
+              tempToken: data.tempToken,
+              username: data.username || formInline.value.username,
+              avatar: data.avatar || '',
+              redirect: route.query?.redirect || '/'
+            }
+          });
         } else {
-          await router.replace(toPath);
+          // 直接登录成功
+          const toPath = decodeURIComponent((route.query?.redirect || '/') as string);
+          message.success('登录成功，即将进入系统');
+          if (route.name === LOGIN_NAME) {
+            await router.replace('/');
+          } else {
+            await router.replace(toPath);
+          }
         }
       } else {
         message.destroyAll();

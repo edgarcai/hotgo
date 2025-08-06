@@ -143,8 +143,20 @@ func (s *sAdminSite) Register(ctx context.Context, in *adminin.RegisterInp) (err
 
 // AccountLogin 账号登录
 func (s *sAdminSite) AccountLogin(ctx context.Context, in *adminin.AccountLoginInp) (res *adminin.LoginModel, err error) {
+	var twoFactorEnabled bool
+	var loginStep string = "password_verification"
+	
 	defer func() {
-		service.SysLoginLog().Push(ctx, &sysin.LoginLogPushInp{Response: res, Err: err})
+		// 记录登录日志，包含2FA相关信息
+		logInp := &sysin.LoginLogPushInp{
+			Response:          res,
+			Err:              err,
+			TwoFactorEnabled:  twoFactorEnabled,
+			TwoFactorMethod:   "", // 在密码验证阶段还未使用2FA方法
+			TwoFactorSuccess:  false, // 密码验证阶段2FA还未成功
+			LoginStep:        loginStep,
+		}
+		service.SysLoginLog().Push(ctx, logInp)
 	}()
 
 	var mb *entity.AdminMember
@@ -175,7 +187,37 @@ func (s *sAdminSite) AccountLogin(ctx context.Context, in *adminin.AccountLoginI
 		return
 	}
 
-	res, err = s.handleLogin(ctx, mb)
+	// 检查用户是否启用了2FA
+	twoFactorStatus, err := service.AdminTwoFactor().GetStatus(ctx, &adminin.TwoFactorGetStatusInp{
+		UserId: mb.Id,
+	})
+	if err != nil {
+		return
+	}
+
+	twoFactorEnabled = twoFactorStatus.IsEnabled
+
+	// 如果启用了2FA，返回需要2FA验证的响应
+	if twoFactorStatus.IsEnabled {
+		// 生成临时token用于2FA验证
+		var tempToken string
+		tempToken, err = s.generateTempToken(ctx, mb.Id)
+		if err != nil {
+			return
+		}
+		
+		// 返回需要2FA验证的响应
+		res.RequiresTwoFactor = true
+		res.TempToken = tempToken
+		loginStep = "awaiting_2fa"
+		return
+	}
+
+	// 未启用2FA，直接完成登录
+	res, err = s.handleLoginWithTwoFactor(ctx, mb, false)
+	if err == nil {
+		loginStep = "login_complete"
+	}
 	return
 }
 
@@ -220,26 +262,63 @@ func (s *sAdminSite) MobileLogin(ctx context.Context, in *adminin.MobileLoginInp
 }
 
 // handleLogin .
-func (s *sAdminSite) handleLogin(ctx context.Context, mb *entity.AdminMember) (res *adminin.LoginModel, err error) {
-	role, dept, err := s.getLoginRoleAndDept(ctx, mb.RoleId, mb.DeptId)
+// generateTempToken 生成临时token用于2FA验证
+func (s *sAdminSite) generateTempToken(ctx context.Context, userId int64) (string, error) {
+	// 生成临时token，有效期5分钟
+	identity := &model.Identity{
+		Id:       userId,
+		RoleKey:  "temp_2fa", // 临时角色，仅用于2FA验证
+		DeptId:   0,
+		Username: "",
+		RealName: "",
+		Avatar:   "",
+		Email:    "",
+		Mobile:   "",
+		App:      consts.AppAdmin,
+		LoginAt:  gtime.Now(),
+	}
+
+	// 生成临时token，有效期5分钟
+	tempToken, _, err := token.Login(ctx, identity)
+	if err != nil {
+		return "", err
+	}
+
+	return tempToken, nil
+}
+
+// HandleLogin 公共登录处理方法
+func (s *sAdminSite) HandleLogin(ctx context.Context, member *entity.AdminMember) (res *adminin.LoginModel, err error) {
+	return s.handleLogin(ctx, member)
+}
+
+// handleLogin 处理登录逻辑，根据调用场景设置2FA验证状态
+func (s *sAdminSite) handleLogin(ctx context.Context, member *entity.AdminMember) (res *adminin.LoginModel, err error) {
+	return s.handleLoginWithTwoFactor(ctx, member, true)
+}
+
+// handleLoginWithTwoFactor 处理登录逻辑，可指定2FA验证状态
+func (s *sAdminSite) handleLoginWithTwoFactor(ctx context.Context, member *entity.AdminMember, twoFactorVerified bool) (res *adminin.LoginModel, err error) {
+	role, dept, err := s.getLoginRoleAndDept(ctx, member.RoleId, member.DeptId)
 	if err != nil {
 		return nil, err
 	}
 
 	user := &model.Identity{
-		Id:       mb.Id,
-		Pid:      mb.Pid,
-		DeptId:   dept.Id,
-		DeptType: dept.Type,
-		RoleId:   role.Id,
-		RoleKey:  role.Key,
-		Username: mb.Username,
-		RealName: mb.RealName,
-		Avatar:   mb.Avatar,
-		Email:    mb.Email,
-		Mobile:   mb.Mobile,
-		App:      consts.AppAdmin,
-		LoginAt:  gtime.Now(),
+		Id:                member.Id,
+		Pid:               member.Pid,
+		DeptId:            dept.Id,
+		DeptType:          dept.Type,
+		RoleId:            role.Id,
+		RoleKey:           role.Key,
+		Username:          member.Username,
+		RealName:          member.RealName,
+		Avatar:            member.Avatar,
+		Email:             member.Email,
+		Mobile:            member.Mobile,
+		App:               consts.AppAdmin,
+		LoginAt:           gtime.Now(),
+		TwoFactorVerified: twoFactorVerified,
 	}
 
 	lt, expires, err := token.Login(ctx, user)
@@ -318,19 +397,20 @@ func (s *sAdminSite) BindUserContext(ctx context.Context, claims *model.Identity
 	}
 
 	user := &model.Identity{
-		Id:       mb.Id,
-		Pid:      mb.Pid,
-		DeptId:   dept.Id,
-		DeptType: dept.Type,
-		RoleId:   mb.RoleId,
-		RoleKey:  role.Key,
-		Username: mb.Username,
-		RealName: mb.RealName,
-		Avatar:   mb.Avatar,
-		Email:    mb.Email,
-		Mobile:   mb.Mobile,
-		App:      claims.App,
-		LoginAt:  claims.LoginAt,
+		Id:                mb.Id,
+		Pid:               mb.Pid,
+		DeptId:            dept.Id,
+		DeptType:          dept.Type,
+		RoleId:            mb.RoleId,
+		RoleKey:           role.Key,
+		Username:          mb.Username,
+		RealName:          mb.RealName,
+		Avatar:            mb.Avatar,
+		Email:             mb.Email,
+		Mobile:            mb.Mobile,
+		App:               claims.App,
+		LoginAt:           claims.LoginAt,
+		TwoFactorVerified: claims.TwoFactorVerified, // 保持原有的2FA验证状态
 	}
 
 	contexts.SetUser(ctx, user)

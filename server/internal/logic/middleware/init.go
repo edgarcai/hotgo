@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"github.com/gogf/gf/v2/encoding/gjson"
 	"github.com/gogf/gf/v2/errors/gcode"
+	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/gogf/gf/v2/net/gtrace"
@@ -22,6 +23,7 @@ import (
 	"hotgo/internal/library/response"
 	"hotgo/internal/library/token"
 	"hotgo/internal/model"
+	"hotgo/internal/model/input/adminin"
 	"hotgo/internal/service"
 	"hotgo/utility/simple"
 	"hotgo/utility/validate"
@@ -198,4 +200,46 @@ func (s *sMiddleware) IsExceptLogin(ctx context.Context, appName, path string) b
 		}
 	}
 	return false
+}
+
+// IsExcept2FA 是否是不需要2FA验证的路由地址
+func (s *sMiddleware) IsExcept2FA(ctx context.Context, path string) bool {
+	// 2FA相关路由不需要验证2FA状态
+	except2FAPaths := []string{
+		"/auth/verify-login-2fa", // 2FA验证接口
+		"/auth/login",           // 登录接口
+		"/auth/logout",          // 登出接口
+		"/two-factor",           // 2FA管理相关接口
+	}
+
+	for _, exceptPath := range except2FAPaths {
+		if validate.InSliceExistStr(exceptPath, path) {
+			return true
+		}
+	}
+	return false
+}
+
+// Check2FAVerification 检查2FA验证状态
+func (s *sMiddleware) Check2FAVerification(r *ghttp.Request) error {
+	ctx := r.Context()
+	user := contexts.GetUser(ctx)
+	if user == nil {
+		return gerror.New("用户信息获取失败")
+	}
+
+	// 检查用户是否启用了2FA
+	twoFactorStatus, err := service.AdminTwoFactor().GetStatus(ctx, &adminin.TwoFactorGetStatusInp{
+		UserId: user.Id,
+	})
+	if err != nil {
+		return err
+	}
+
+	// 如果用户启用了2FA但未完成验证，拒绝访问
+	if twoFactorStatus.IsEnabled && !user.TwoFactorVerified {
+		return gerror.New("需要完成双因子认证才能访问此资源")
+	}
+
+	return nil
 }

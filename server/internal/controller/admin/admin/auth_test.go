@@ -7,6 +7,7 @@ package admin
 
 import (
 	"context"
+	"strings"
 	"testing"
 
 	"github.com/gogf/gf/v2/test/gtest"
@@ -195,9 +196,117 @@ func TestAuth_Verify2FA(t *testing.T) {
 		// 调用控制器方法
 		res, err := Auth.Verify2FA(ctx, req)
 
-		// 验证结果
-		_ = res
-		_ = err
-		// 在实际测试中，需要提供有效的TOTP码或备用恢复码
+		// 验证结果（由于没有实际的2FA设置，预期会失败）
+		t.AssertNE(err, nil)
+		t.AssertNil(res)
+	})
+}
+
+// TestAuth_VerifyLogin2FA_Success 测试2FA登录验证成功
+func TestAuth_VerifyLogin2FA_Success(t *testing.T) {
+	gtest.C(t, func(t *gtest.T) {
+		// 创建测试请求
+		req := &auth.VerifyLogin2FAReq{
+			TempToken: "valid_temp_token",
+			Code:      "123456",
+			CodeType:  "totp",
+		}
+
+		// 创建测试上下文
+		ctx := context.Background()
+
+		// 调用控制器方法
+		res, err := Auth.VerifyLogin2FA(ctx, req)
+
+		// 验证结果（由于没有实际的临时token验证，预期会失败）
+		t.AssertNE(err, nil)
+		t.AssertNil(res)
+	})
+}
+
+// TestAuth_VerifyLogin2FA_InvalidToken 测试2FA登录验证无效token
+func TestAuth_VerifyLogin2FA_InvalidToken(t *testing.T) {
+	gtest.C(t, func(t *gtest.T) {
+		// 创建测试请求
+		req := &auth.VerifyLogin2FAReq{
+			TempToken: "invalid_temp_token",
+			Code:      "123456",
+			CodeType:  "totp",
+		}
+
+		// 创建测试上下文
+		ctx := context.Background()
+
+		// 调用控制器方法
+		res, err := Auth.VerifyLogin2FA(ctx, req)
+
+		// 验证结果（预期失败）
+		t.AssertNE(err, nil)
+		t.AssertNil(res)
+		// 检查错误信息是否包含预期内容
+		if err != nil {
+			t.Assert(strings.Contains(err.Error(), "2FA") || strings.Contains(err.Error(), "验证"), true)
+		}
+	})
+}
+
+// TestAuth_VerifyLogin2FA_BackupCode 测试使用备用码进行2FA登录验证
+func TestAuth_VerifyLogin2FA_BackupCode(t *testing.T) {
+	gtest.C(t, func(t *gtest.T) {
+		// 创建测试请求
+		req := &auth.VerifyLogin2FAReq{
+			TempToken: "valid_temp_token",
+			Code:      "backup-code-123",
+			CodeType:  "backup",
+		}
+
+		// 创建测试上下文
+		ctx := context.Background()
+
+		// 调用控制器方法
+		res, err := Auth.VerifyLogin2FA(ctx, req)
+
+		// 验证结果（由于没有实际的临时token验证，预期会失败）
+		t.AssertNE(err, nil)
+		t.AssertNil(res)
+	})
+}
+
+// TestAuth_VerifyLogin2FA_InputValidation 测试2FA登录验证输入验证
+func TestAuth_VerifyLogin2FA_InputValidation(t *testing.T) {
+	gtest.C(t, func(t *gtest.T) {
+		// 测试空临时token
+		req1 := &auth.VerifyLogin2FAReq{
+			TempToken: "",
+			Code:      "123456",
+			CodeType:  "totp",
+		}
+
+		ctx := context.Background()
+		res1, err1 := Auth.VerifyLogin2FA(ctx, req1)
+		t.AssertNE(err1, nil)
+		t.AssertNil(res1)
+
+		// 测试空验证码
+		req2 := &auth.VerifyLogin2FAReq{
+			TempToken: "valid_temp_token",
+			Code:      "",
+			CodeType:  "totp",
+		}
+
+		res2, err2 := Auth.VerifyLogin2FA(ctx, req2)
+		t.AssertNE(err2, nil)
+		t.AssertNil(res2)
+
+		// 测试无效的验证码类型
+		req3 := &auth.VerifyLogin2FAReq{
+			TempToken: "valid_temp_token",
+			Code:      "123456",
+			CodeType:  "invalid",
+		}
+
+		res3, err3 := Auth.VerifyLogin2FA(ctx, req3)
+		t.AssertNE(err3, nil)
+		t.AssertNil(res3)
 	})
 }

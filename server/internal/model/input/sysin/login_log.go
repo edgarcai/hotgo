@@ -74,6 +74,10 @@ type LoginLogExportModel struct {
 
 // LoginLogPushInp 解推送登录日志
 type LoginLogPushInp struct {
-	Response *adminin.LoginModel
-	Err      error
+	Response         *adminin.LoginModel
+	Err              error
+	TwoFactorEnabled bool   `json:"twoFactorEnabled" dc:"是否启用2FA"`
+	TwoFactorMethod  string `json:"twoFactorMethod"  dc:"2FA验证方式：totp/backup_code"`
+	TwoFactorSuccess bool   `json:"twoFactorSuccess" dc:"2FA验证是否成功"`
+	LoginStep        string `json:"loginStep"        dc:"登录步骤：password/two_factor"`
 }

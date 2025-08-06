@@ -46,6 +46,8 @@ type AccountLoginReq struct {
 
 type AccountLoginRes struct {
 	*adminin.LoginModel
+	RequiresTwoFactor bool   `json:"requiresTwoFactor,omitempty" dc:"是否需要双因素认证"`
+	TempToken         string `json:"tempToken,omitempty" dc:"临时token用于2FA验证"`
 }
 
 // MobileLoginReq 提交手机号登录

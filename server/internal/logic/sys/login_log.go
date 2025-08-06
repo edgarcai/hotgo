@@ -129,6 +129,7 @@ func (s *sSysLoginLog) Delete(ctx context.Context, in *sysin.LoginLogDeleteInp) 
 }
 
 // Push 推送登录日志
+// Push 推送登录日志，支持2FA验证信息记录
 func (s *sSysLoginLog) Push(ctx context.Context, in *sysin.LoginLogPushInp) {
 	if in.Response == nil {
 		in.Response = new(adminin.LoginModel)
@@ -166,10 +167,25 @@ func (s *sSysLoginLog) Push(ctx context.Context, in *sysin.LoginLogPushInp) {
 		models.ErrMsg = in.Err.Error()
 	}
 
-	models.Response = gjson.New(consts.NilJsonToString)
-	if in.Response != nil {
-		models.Response = gjson.New(in.Response)
+	// 构建包含2FA信息的响应数据
+	responseData := g.Map{
+		"user": in.Response,
 	}
+
+	// 添加2FA相关信息到响应数据中
+	if in.TwoFactorEnabled {
+		responseData["twoFactorEnabled"] = true
+		responseData["loginStep"] = in.LoginStep
+		if in.TwoFactorMethod != "" {
+			responseData["twoFactorMethod"] = in.TwoFactorMethod
+		}
+		responseData["twoFactorSuccess"] = in.TwoFactorSuccess
+	} else {
+		responseData["twoFactorEnabled"] = false
+		responseData["loginStep"] = "password"
+	}
+
+	models.Response = gjson.New(responseData)
 
 	if err = queue.Push(consts.QueueLoginLogTopic, models); err != nil {
 		g.Log().Warningf(ctx, "push LoginLog err:%+v, models:%v", err, gjson.New(models).String())
