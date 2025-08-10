@@ -44,6 +44,12 @@ type (
 		ResponseHandler(r *ghttp.Request)
 		// WebSocketAuth websocket鉴权中间件
 		WebSocketAuth(r *ghttp.Request)
+		// Admin2FA 后台2FA验证中间件
+		Admin2FA(r *ghttp.Request)
+		// Clear2FAVerified 清除会话中的2FA验证状态
+		Clear2FAVerified(r *ghttp.Request) error
+		// Set2FAVerified 设置会话中的2FA验证状态
+		Set2FAVerified(r *ghttp.Request, adminId int64) error
 	}
 )
 

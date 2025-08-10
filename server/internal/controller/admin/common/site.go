@@ -10,8 +10,11 @@ import (
 	"hotgo/api/admin/common"
 	"hotgo/internal/consts"
 	"hotgo/internal/library/captcha"
+	"hotgo/internal/library/contexts"
 	"hotgo/internal/library/token"
+	"hotgo/internal/model/input/adminin"
 	"hotgo/internal/service"
+
 	"hotgo/utility/validate"
 
 	"github.com/gogf/gf/v2/errors/gerror"
@@ -147,6 +150,52 @@ func (c *cSite) MobileLogin(ctx context.Context, req *common.MobileLoginReq) (re
 
 // Logout 注销登录
 func (c *cSite) Logout(ctx context.Context, _ *common.LoginLogoutReq) (res *common.LoginLogoutRes, err error) {
-	err = token.Logout(ghttp.RequestFromCtx(ctx))
+	// 清除2FA验证状态
+	request := ghttp.RequestFromCtx(ctx)
+	if request != nil {
+		service.Middleware().Clear2FAVerified(request)
+	}
+
+	err = token.Logout(request)
+	return
+}
+
+// Verify2FA 验证2FA
+func (c *cSite) Verify2FA(ctx context.Context, req *common.Verify2FAReq) (res *common.Verify2FARes, err error) {
+	adminId := contexts.GetUserId(ctx)
+	if adminId <= 0 {
+		return nil, gerror.New("用户未登录")
+	}
+
+	// 验证2FA
+	verifyInp := &adminin.Admin2faVerifyInp{
+		Code: req.Code,
+	}
+
+	// 首先尝试TOTP验证
+	err = service.Admin2fa().Verify(ctx, verifyInp)
+	if err != nil {
+		// 如果TOTP验证失败，尝试备用码验证
+		backupInp := &adminin.Admin2faUseBackupCodeInp{
+			Code:    req.Code,
+			AdminId: adminId,
+		}
+		err = service.Admin2fa().UseBackupCode(ctx, backupInp)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	// 验证成功，设置会话中的2FA验证状态
+	request := ghttp.RequestFromCtx(ctx)
+	if request != nil {
+		if err = service.Middleware().Set2FAVerified(request, adminId); err != nil {
+			return nil, gerror.Wrap(err, "设置2FA验证状态失败")
+		}
+	}
+
+	res = &common.Verify2FARes{
+		Message: "2FA验证成功",
+	}
 	return
 }

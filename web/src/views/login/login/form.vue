@@ -1,5 +1,15 @@
 <template>
+  <!-- 2FA验证界面 -->
+  <TwoFAVerify
+    v-if="show2FAVerify"
+    :loginData="loginData"
+    @back="handle2FABack"
+    @success="handle2FASuccess"
+  />
+  
+  <!-- 普通登录表单 -->
   <n-form
+    v-else
     ref="formRef"
     label-placement="left"
     size="large"
@@ -138,6 +148,7 @@
   import { SendSms } from '@/api/system/user';
   import { validate } from '@/utils/validateUtil';
   import { useDebounceFn } from '@vueuse/core';
+  import TwoFAVerify from '../components/2fa-verify.vue';
 
   interface Props {
     mode: string;
@@ -167,6 +178,10 @@
   const codeBase64 = ref('');
   const loadingBar = useLoadingBar();
   const loadingBarTargetRef = ref<undefined | HTMLElement>(undefined);
+  
+  // 2FA相关状态
+  const show2FAVerify = ref(false);
+  const loginData = ref(null);
   const userStore = useUserStore();
   const router = useRouter();
   const route = useRoute();
@@ -288,15 +303,22 @@
     message.loading('登录中...');
     loading.value = true;
     try {
-      const { code, message: msg } = await request;
+      const { code, message: msg, data } = await request;
       message.destroyAll();
       if (code == ResultEnum.SUCCESS) {
-        const toPath = decodeURIComponent((route.query?.redirect || '/') as string);
-        message.success('登录成功，即将进入系统');
-        if (route.name === LOGIN_NAME) {
-          await router.replace('/');
+        // 检查是否需要2FA验证
+        if (data && data.require2FA) {
+          loginData.value = data;
+          show2FAVerify.value = true;
+          message.success('登录成功，请进行双因子认证');
         } else {
-          await router.replace(toPath);
+          const toPath = decodeURIComponent((route.query?.redirect || '/') as string);
+          message.success('登录成功，即将进入系统');
+          if (route.name === LOGIN_NAME) {
+            await router.replace('/');
+          } else {
+            await router.replace(toPath);
+          }
         }
       } else {
         message.destroyAll();
@@ -306,6 +328,23 @@
     } finally {
       loading.value = false;
     }
+  }
+
+  // 2FA相关方法
+  function handle2FABack() {
+    show2FAVerify.value = false;
+    loginData.value = null;
+    // 清空表单
+    formInline.value.username = '';
+    formInline.value.pass = '';
+    formInline.value.code = '';
+    formMobile.value.mobile = '';
+    formMobile.value.code = '';
+  }
+
+  function handle2FASuccess() {
+    show2FAVerify.value = false;
+    loginData.value = null;
   }
 
   onMounted(() => {

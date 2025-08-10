@@ -110,6 +110,7 @@ export const useAsyncRouteStore = defineStore({
             positiveText: '确定',
             onPositiveClick: () => {},
           });
+          accessedRouters = []; // 确保accessedRouters是数组
         }
       } else {
         try {
@@ -123,10 +124,12 @@ export const useAsyncRouteStore = defineStore({
             positiveText: '确定',
             onPositiveClick: () => {},
           });
+          accessedRouters = []; // 确保accessedRouters是数组
         }
       }
 
-      accessedRouters = accessedRouters.filter(routeFilter);
+      // 确保accessedRouters是数组后再进行过滤
+      accessedRouters = (accessedRouters || []).filter(routeFilter);
 
       this.setRouters(accessedRouters);
       this.setMenus(accessedRouters);

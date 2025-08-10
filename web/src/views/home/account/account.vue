@@ -21,6 +21,7 @@
           <SafetySetting v-if="type === 2" />
           <CashSetting v-if="type === 3" />
           <ThirdBind v-if="type === 4" />
+          <TwoFactorAuth v-if="type === 5" />
         </n-card>
       </n-grid-item>
     </n-grid>
@@ -32,6 +33,7 @@
   import SafetySetting from './SafetySetting.vue';
   import CashSetting from './CashSetting.vue';
   import ThirdBind from './ThirdBind.vue';
+  import TwoFactorAuth from './TwoFactorAuth.vue';
   import { useRouter } from 'vue-router';
   import {pushHashRouterParameter} from "@/utils/urlUtils";
 
@@ -59,6 +61,11 @@
       name: '第三方绑定',
       desc: '第三方快捷登录、消息推送',
       key: 4,
+    },
+    {
+      name: '双因子认证',
+      desc: '2FA安全验证设置',
+      key: 5,
     },
   ];
 

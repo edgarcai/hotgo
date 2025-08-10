@@ -48,6 +48,39 @@
           <n-input placeholder="版权所有" v-model:value="formValue.basicCopyright" />
         </n-form-item>
 
+        <n-divider title-placement="left">双因子认证配置</n-divider>
+        
+        <n-form-item label="启用2FA" path="basicTwoFASwitch">
+          <n-radio-group v-model:value="formValue.basicTwoFASwitch" name="basicTwoFASwitch">
+            <n-space>
+              <n-radio :value="1">开启</n-radio>
+              <n-radio :value="0">关闭</n-radio>
+            </n-space>
+          </n-radio-group>
+          <template #feedback>
+            是否启用双因子认证功能，开启后用户可以在个人设置中配置2FA
+          </template>
+        </n-form-item>
+
+        <n-form-item label="强制启用2FA" path="basicTwoFAForce">
+          <n-radio-group v-model:value="formValue.basicTwoFAForce" name="basicTwoFAForce">
+            <n-space>
+              <n-radio :value="1">强制</n-radio>
+              <n-radio :value="0">可选</n-radio>
+            </n-space>
+          </n-radio-group>
+          <template #feedback>
+            是否强制用户启用2FA，设为强制时所有用户必须配置2FA才能正常使用系统
+          </template>
+        </n-form-item>
+
+        <n-form-item label="2FA发行者名称" path="basicTwoFAIssuer">
+          <n-input v-model:value="formValue.basicTwoFAIssuer" placeholder="请输入2FA发行者名称" />
+          <template #feedback>
+            在2FA应用（如Google Authenticator）中显示的发行者名称
+          </template>
+        </n-form-item>
+
         <div>
           <n-space>
             <n-button type="primary" @click="formSubmit">保存更新</n-button>
@@ -83,6 +116,10 @@
     basicCloseText:
       '网站维护中，暂时无法访问！本网站正在进行系统维护和技术升级，网站暂时无法访问，敬请谅解！',
     basicSystemOpen: true,
+    // 2FA相关配置
+    basicTwoFASwitch: 0,
+    basicTwoFAForce: 0,
+    basicTwoFAIssuer: 'HotGo',
   });
 
   const rules = {

@@ -187,16 +187,16 @@ export const useUserStore = defineStore({
         getUserInfo()
           .then((res) => {
             const result = res as UserInfoState;
-            if (result.permissions && result.permissions.length) {
-              const permissionsList = result.permissions;
-              that.setPermissions(permissionsList);
-              that.setUserInfo(result);
-              that.setAvatar(result.avatar);
-              that.setUsername(result.username);
-              that.setRealName(result.realName);
-            } else {
-              reject(new Error('getInfo: permissionsList must be a non-null array !'));
+            // 处理权限列表，如果为空或只包含占位符，则设置为空数组
+            let permissionsList = result.permissions || [];
+            if (permissionsList.length === 1 && permissionsList[0] === 'value') {
+              permissionsList = [];
             }
+            that.setPermissions(permissionsList);
+            that.setUserInfo(result);
+            that.setAvatar(result.avatar);
+            that.setUsername(result.username);
+            that.setRealName(result.realName);
             resolve(result);
           })
           .catch((error) => {

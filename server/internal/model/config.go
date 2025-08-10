@@ -19,6 +19,10 @@ type BasicConfig struct {
 	WsAddr         string `json:"basicWsAddr"`
 	RegisterSwitch int    `json:"basicRegisterSwitch"`
 	SystemOpen     bool   `json:"basicSystemOpen"`
+	// 2FA相关配置
+	TwoFASwitch    int    `json:"basicTwoFASwitch"`    // 2FA全局开关 0:关闭 1:开启
+	TwoFAForce     int    `json:"basicTwoFAForce"`     // 强制启用2FA 0:可选 1:强制
+	TwoFAIssuer    string `json:"basicTwoFAIssuer"`    // 2FA发行者名称
 }
 
 // EmailTemplate 邮件模板

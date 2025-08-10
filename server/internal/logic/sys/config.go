@@ -79,6 +79,14 @@ func (s *sSysConfig) LoadConfig(ctx context.Context) (err error) {
 	}
 	token.SetConfig(tk)
 
+	// 加载2FA配置
+	twoFA, err := s.Get2FA(ctx)
+	if err != nil {
+		return
+	}
+	// 这里可以设置全局2FA配置，如果需要的话
+	_ = twoFA
+
 	// 更多
 	// ...
 	return
@@ -167,6 +175,12 @@ func (s *sSysConfig) GetBasic(ctx context.Context) (conf *model.BasicConfig, err
 	}
 	err = gconv.Scan(models.List, &conf)
 	return
+}
+
+// Get2FA 获取2FA配置
+func (s *sSysConfig) Get2FA(ctx context.Context) (conf *model.BasicConfig, err error) {
+	// 2FA配置目前存储在basic分组中
+	return s.GetBasic(ctx)
 }
 
 // GetLoadTCP 获取本地tcp配置

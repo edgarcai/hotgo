@@ -85,3 +85,13 @@ type SitePingReq struct {
 }
 
 type SitePingRes struct{}
+
+// Verify2FAReq 验证2FA
+type Verify2FAReq struct {
+	g.Meta `path:"/site/verify2fa" method:"post" tags:"后台基础" summary:"验证2FA"`
+	Code   string `json:"code" v:"required|length:6,8" dc:"验证码(TOTP或备用码)"`
+}
+
+type Verify2FARes struct {
+	Message string `json:"message" dc:"验证结果消息"`
+}

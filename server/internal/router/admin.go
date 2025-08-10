@@ -49,15 +49,16 @@ func Admin(ctx context.Context, group *ghttp.RouterGroup) {
 			sys.SmsLog,       // 短信记录
 			sys.ServeLicense, // 服务许可证
 			admin.Member,     // 用户
-			admin.Monitor,    // 监控
-			admin.Role,       // 路由
-			admin.Dept,       // 部门
-			admin.Menu,       // 菜单
-			admin.Notice,     // 公告
-			admin.Post,       // 岗位
-			admin.Order,      // 充值订单
-			admin.CreditsLog, // 资金变动
-			admin.Cash,       // 提现
+		admin.Monitor,    // 监控
+		admin.Role,       // 路由
+		admin.Dept,       // 部门
+		admin.Menu,       // 菜单
+		admin.Notice,     // 公告
+		admin.Post,       // 岗位
+		admin.Order,      // 充值订单
+		admin.CreditsLog, // 资金变动
+		admin.Cash,       // 提现
+		admin.Admin2fa,   // 2FA二次验证
 			pay.Refund,       // 交易退款
 		)
 
