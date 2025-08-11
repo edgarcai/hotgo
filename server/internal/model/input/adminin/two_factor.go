@@ -71,3 +71,8 @@ type TwoFactorRegenerateBackupCodesInp struct {
 type TwoFactorRegenerateBackupCodesModel struct {
 	BackupCodes []string `json:"backupCodes" dc:"新的备用恢复码列表"`
 }
+
+// TwoFactorAdminResetInp 管理员重置用户2FA输入
+type TwoFactorAdminResetInp struct {
+	UserId int64 `json:"userId" v:"required#用户ID不能为空" dc:"目标用户ID"`
+}

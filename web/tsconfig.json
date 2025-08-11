@@ -46,8 +46,10 @@
     "build/**/*.ts",
     "build/**/*.d.ts",
     "mock/**/*.ts",
+    "tests/**/*.ts",
     "components.d.ts",
-    "vite.config.ts"
+    "vite.config.ts",
+    "vitest.setup.ts"
   ],
   "exclude": [
     "node_modules",

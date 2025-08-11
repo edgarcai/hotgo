@@ -267,6 +267,8 @@ type (
 		GetStatus(ctx context.Context, in *adminin.TwoFactorGetStatusInp) (res *adminin.TwoFactorGetStatusModel, err error)
 		// RegenerateBackupCodes 重新生成备用恢复码
 		RegenerateBackupCodes(ctx context.Context, in *adminin.TwoFactorRegenerateBackupCodesInp) (res *adminin.TwoFactorRegenerateBackupCodesModel, err error)
+		// AdminReset 管理员重置用户双因子认证
+		AdminReset(ctx context.Context, in *adminin.TwoFactorAdminResetInp) (err error)
 	}
 )
 

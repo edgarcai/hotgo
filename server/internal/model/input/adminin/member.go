@@ -8,14 +8,15 @@ package adminin
 import (
 	"context"
 	"fmt"
-	"github.com/gogf/gf/v2/errors/gerror"
-	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/os/gtime"
 	"hotgo/internal/consts"
 	"hotgo/internal/library/contexts"
 	"hotgo/internal/model/entity"
 	"hotgo/internal/model/input/form"
 	"hotgo/utility/validate"
+
+	"github.com/gogf/gf/v2/errors/gerror"
+	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/os/gtime"
 )
 
 // MemberUpdateCashInp 更新会员提现信息
@@ -206,6 +207,12 @@ type MemberListModel struct {
 	RoleName string  `json:"roleName"    dc:"所属角色"`
 	PostIds  []int64 `json:"postIds"     dc:"岗位"`
 	DeptId   int64   `json:"deptId"      dc:"部门ID"`
+	// 是否启用双因素认证：0=未开启，1=已开启
+	TwoFactorEnabled int `json:"twoFactorEnabled" dc:"是否启用2FA，0=禁用，1=启用"`
+	// 双因素认证剩余备用码数量
+	TwoFactorBackupCodesCount int `json:"twoFactorBackupCodesCount" dc:"剩余备用恢复码数量"`
+	// 双因素认证最后使用时间
+	TwoFactorLastUsedAt *gtime.Time `json:"twoFactorLastUsedAt" dc:"2FA最后使用时间"`
 }
 
 // MemberCash 用户提现配置

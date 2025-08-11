@@ -294,16 +294,26 @@
         // 检查是否需要2FA验证
         if (data?.requiresTwoFactor && data?.tempToken) {
           message.success('密码验证成功，请完成双因素认证');
-          // 跳转到2FA验证页面
-          await router.push({
-            path: '/verify-2fa',
-            query: {
-              tempToken: data.tempToken,
-              username: data.username || formInline.value.username,
-              avatar: data.avatar || '',
-              redirect: route.query?.redirect || '/',
-            },
-          });
+          try {
+            // 跳转到2FA验证页面
+            await router.push({
+              path: '/verify-2fa',
+              query: {
+                tempToken: data.tempToken,
+                username: data.username || formInline.value.username,
+                avatar: data.avatar || '',
+                redirect: route.query?.redirect || '/',
+              },
+            });
+          } catch (e) {
+            console.error('跳转2FA页面失败:', e);
+            message.error('跳转2FA验证页面失败，请重试');
+          }
+        } else if (data?.requiresTwoFactor && !data?.tempToken) {
+          // 异常兜底：后端声明需要2FA但未返回临时令牌
+          message.error('登录需要双因素认证，但缺少临时令牌，请重试登录');
+          await refreshCode();
+          return;
         } else {
           // 直接登录成功
           const toPath = decodeURIComponent((route.query?.redirect || '/') as string);

@@ -318,6 +318,20 @@ func (s *sTwoFactor) RegenerateBackupCodes(ctx context.Context, in *adminin.TwoF
 	return res, nil
 }
 
+// AdminReset 管理员重置用户2FA
+func (s *sTwoFactor) AdminReset(ctx context.Context, in *adminin.TwoFactorAdminResetInp) (err error) {
+	// 删除用户的2FA记录
+	_, err = dao.AdminTwoFactor.Ctx(ctx).Where("member_id", in.UserId).Delete()
+	if err != nil {
+		return err
+	}
+
+	// 记录管理员操作日志
+	// TODO: 添加操作日志记录
+
+	return nil
+}
+
 // verifyBackupCode 验证备用恢复码（不标记为已使用）
 func (s *sTwoFactor) verifyBackupCode(ctx context.Context, userId int64, code string) (bool, error) {
 	// 获取用户的2FA记录

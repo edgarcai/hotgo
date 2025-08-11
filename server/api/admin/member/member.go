@@ -136,3 +136,11 @@ type AddIntegralReq struct {
 }
 
 type AddIntegralRes struct{}
+
+// Reset2FAReq 重置用户双因子认证
+type Reset2FAReq struct {
+	g.Meta `path:"/member/reset2fa" method:"post" tags:"用户" summary:"重置用户双因子认证"`
+	adminin.TwoFactorAdminResetInp
+}
+
+type Reset2FARes struct{}

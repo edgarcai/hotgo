@@ -7,7 +7,6 @@ package router
 
 import (
 	"context"
-	"github.com/gogf/gf/v2/net/ghttp"
 	"hotgo/internal/consts"
 	"hotgo/internal/controller/admin/admin"
 	"hotgo/internal/controller/admin/common"
@@ -16,6 +15,8 @@ import (
 	"hotgo/internal/router/genrouter"
 	"hotgo/internal/service"
 	"hotgo/utility/simple"
+
+	"github.com/gogf/gf/v2/net/ghttp"
 )
 
 func Admin(ctx context.Context, group *ghttp.RouterGroup) {
@@ -30,37 +31,39 @@ func Admin(ctx context.Context, group *ghttp.RouterGroup) {
 		)
 		group.Middleware(service.Middleware().AdminAuth)
 		group.Bind(
-			common.Console,   // 控制台
-			common.Ems,       // 邮件
-			common.Sms,       // 短信
-			common.Upload,    // 上传
-			common.Wechat,    // 微信授权
-			sys.Config,       // 配置
-			sys.DictType,     // 字典类型
-			sys.DictData,     // 字典数据
-			sys.Attachment,   // 附件
-			sys.Provinces,    // 省市区
-			sys.Cron,         // 定时任务
-			sys.CronGroup,    // 定时任务分组
-			sys.Blacklist,    // 黑名单
-			sys.Log,          // 访问日志
-			sys.LoginLog,     // 登录日志
-			sys.ServeLog,     // 服务日志
-			sys.SmsLog,       // 短信记录
-			sys.ServeLicense, // 服务许可证
-			admin.Member,     // 用户
-			admin.TwoFactor,  // 双因子认证
-			admin.Auth,       // 认证API
-			admin.Monitor,    // 监控
-			admin.Role,       // 路由
-			admin.Dept,       // 部门
-			admin.Menu,       // 菜单
-			admin.Notice,     // 公告
-			admin.Post,       // 岗位
-			admin.Order,      // 充值订单
-			admin.CreditsLog, // 资金变动
-			admin.Cash,       // 提现
-			pay.Refund,       // 交易退款
+			common.Console,     // 控制台
+			common.Ems,         // 邮件
+			common.Sms,         // 短信
+			common.Upload,      // 上传
+			common.Wechat,      // 微信授权
+			sys.Config,         // 配置
+			sys.DictType,       // 字典类型
+			sys.DictData,       // 字典数据
+			sys.Attachment,     // 附件
+			sys.Provinces,      // 省市区
+			sys.Cron,           // 定时任务
+			sys.CronGroup,      // 定时任务分组
+			sys.Blacklist,      // 黑名单
+			sys.Log,            // 访问日志
+			sys.LoginLog,       // 登录日志
+			sys.ServeLog,       // 服务日志
+			sys.SmsLog,         // 短信记录
+			sys.ServeLicense,   // 服务许可证
+			admin.Member,       // 用户
+			admin.TwoFactor,    // 双因子认证
+			sys.TwoFactorLog,   // 2FA操作日志
+			sys.TwoFactorStats, // 2FA统计
+			admin.Auth,         // 认证API
+			admin.Monitor,      // 监控
+			admin.Role,         // 路由
+			admin.Dept,         // 部门
+			admin.Menu,         // 菜单
+			admin.Notice,       // 公告
+			admin.Post,         // 岗位
+			admin.Order,        // 充值订单
+			admin.CreditsLog,   // 资金变动
+			admin.Cash,         // 提现
+			pay.Refund,         // 交易退款
 		)
 
 		group.Middleware(service.Middleware().Develop)

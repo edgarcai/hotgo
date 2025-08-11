@@ -143,3 +143,9 @@ func (c *cMember) AddIntegral(ctx context.Context, req *member.AddIntegralReq) (
 	err = service.AdminMember().AddIntegral(ctx, &req.MemberAddIntegralInp)
 	return
 }
+
+// Reset2FA 重置用户双因子认证
+func (c *cMember) Reset2FA(ctx context.Context, req *member.Reset2FAReq) (res *member.Reset2FARes, err error) {
+	err = service.AdminTwoFactor().AdminReset(ctx, &req.TwoFactorAdminResetInp)
+	return
+}

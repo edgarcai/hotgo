@@ -1,0 +1,332 @@
+<testsuites id="" name="" tests="20" failures="20" skipped="0" errors="0" time="3.378918">
+<testsuite name="two-factor.spec.ts" timestamp="2025-08-09T15:39:08.833Z" hostname="chromium" tests="4" failures="4" skipped="0" time="0.011" errors="0">
+<testcase name="2FA 设置界面 › 可以登录并访问2FA设置页" classname="two-factor.spec.ts" time="0.003">
+<failure message="two-factor.spec.ts:54:3 可以登录并访问2FA设置页" type="FAILURE">
+<![CDATA[  [chromium] › two-factor.spec.ts:54:3 › 2FA 设置界面 › 可以登录并访问2FA设置页 ──────────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/caijiaxin/Library/Caches/ms-playwright/chromium_headless_shell-1181/chrome-mac/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+<testcase name="2FA 设置界面 › 可以打开启用2FA向导并进行UI交互" classname="two-factor.spec.ts" time="0.002">
+<failure message="two-factor.spec.ts:60:3 可以打开启用2FA向导并进行UI交互" type="FAILURE">
+<![CDATA[  [chromium] › two-factor.spec.ts:60:3 › 2FA 设置界面 › 可以打开启用2FA向导并进行UI交互 ─────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/caijiaxin/Library/Caches/ms-playwright/chromium_headless_shell-1181/chrome-mac/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+<testcase name="2FA 设置界面 › 已启用时可以查看与重新生成备用码UI" classname="two-factor.spec.ts" time="0.003">
+<failure message="two-factor.spec.ts:82:3 已启用时可以查看与重新生成备用码UI" type="FAILURE">
+<![CDATA[  [chromium] › two-factor.spec.ts:82:3 › 2FA 设置界面 › 已启用时可以查看与重新生成备用码UI ─────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/caijiaxin/Library/Caches/ms-playwright/chromium_headless_shell-1181/chrome-mac/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+<testcase name="2FA 设置界面 › 可以打开禁用2FA表单UI" classname="two-factor.spec.ts" time="0.003">
+<failure message="two-factor.spec.ts:107:3 可以打开禁用2FA表单UI" type="FAILURE">
+<![CDATA[  [chromium] › two-factor.spec.ts:107:3 › 2FA 设置界面 › 可以打开禁用2FA表单UI ─────────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/caijiaxin/Library/Caches/ms-playwright/chromium_headless_shell-1181/chrome-mac/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="two-factor.spec.ts" timestamp="2025-08-09T15:39:08.833Z" hostname="firefox" tests="4" failures="4" skipped="0" time="0.01" errors="0">
+<testcase name="2FA 设置界面 › 可以登录并访问2FA设置页" classname="two-factor.spec.ts" time="0.003">
+<failure message="two-factor.spec.ts:54:3 可以登录并访问2FA设置页" type="FAILURE">
+<![CDATA[  [firefox] › two-factor.spec.ts:54:3 › 2FA 设置界面 › 可以登录并访问2FA设置页 ───────────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/caijiaxin/Library/Caches/ms-playwright/firefox-1489/firefox/Nightly.app/Contents/MacOS/firefox
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+<testcase name="2FA 设置界面 › 可以打开启用2FA向导并进行UI交互" classname="two-factor.spec.ts" time="0.002">
+<failure message="two-factor.spec.ts:60:3 可以打开启用2FA向导并进行UI交互" type="FAILURE">
+<![CDATA[  [firefox] › two-factor.spec.ts:60:3 › 2FA 设置界面 › 可以打开启用2FA向导并进行UI交互 ──────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/caijiaxin/Library/Caches/ms-playwright/firefox-1489/firefox/Nightly.app/Contents/MacOS/firefox
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+<testcase name="2FA 设置界面 › 已启用时可以查看与重新生成备用码UI" classname="two-factor.spec.ts" time="0.002">
+<failure message="two-factor.spec.ts:82:3 已启用时可以查看与重新生成备用码UI" type="FAILURE">
+<![CDATA[  [firefox] › two-factor.spec.ts:82:3 › 2FA 设置界面 › 已启用时可以查看与重新生成备用码UI ──────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/caijiaxin/Library/Caches/ms-playwright/firefox-1489/firefox/Nightly.app/Contents/MacOS/firefox
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+<testcase name="2FA 设置界面 › 可以打开禁用2FA表单UI" classname="two-factor.spec.ts" time="0.003">
+<failure message="two-factor.spec.ts:107:3 可以打开禁用2FA表单UI" type="FAILURE">
+<![CDATA[  [firefox] › two-factor.spec.ts:107:3 › 2FA 设置界面 › 可以打开禁用2FA表单UI ──────────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/caijiaxin/Library/Caches/ms-playwright/firefox-1489/firefox/Nightly.app/Contents/MacOS/firefox
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="two-factor.spec.ts" timestamp="2025-08-09T15:39:08.833Z" hostname="webkit" tests="4" failures="4" skipped="0" time="0.011" errors="0">
+<testcase name="2FA 设置界面 › 可以登录并访问2FA设置页" classname="two-factor.spec.ts" time="0.002">
+<failure message="two-factor.spec.ts:54:3 可以登录并访问2FA设置页" type="FAILURE">
+<![CDATA[  [webkit] › two-factor.spec.ts:54:3 › 2FA 设置界面 › 可以登录并访问2FA设置页 ────────────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/caijiaxin/Library/Caches/ms-playwright/webkit-2191/pw_run.sh
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+<testcase name="2FA 设置界面 › 可以打开启用2FA向导并进行UI交互" classname="two-factor.spec.ts" time="0.004">
+<failure message="two-factor.spec.ts:60:3 可以打开启用2FA向导并进行UI交互" type="FAILURE">
+<![CDATA[  [webkit] › two-factor.spec.ts:60:3 › 2FA 设置界面 › 可以打开启用2FA向导并进行UI交互 ───────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/caijiaxin/Library/Caches/ms-playwright/webkit-2191/pw_run.sh
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+<testcase name="2FA 设置界面 › 已启用时可以查看与重新生成备用码UI" classname="two-factor.spec.ts" time="0.003">
+<failure message="two-factor.spec.ts:82:3 已启用时可以查看与重新生成备用码UI" type="FAILURE">
+<![CDATA[  [webkit] › two-factor.spec.ts:82:3 › 2FA 设置界面 › 已启用时可以查看与重新生成备用码UI ───────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/caijiaxin/Library/Caches/ms-playwright/webkit-2191/pw_run.sh
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+<testcase name="2FA 设置界面 › 可以打开禁用2FA表单UI" classname="two-factor.spec.ts" time="0.002">
+<failure message="two-factor.spec.ts:107:3 可以打开禁用2FA表单UI" type="FAILURE">
+<![CDATA[  [webkit] › two-factor.spec.ts:107:3 › 2FA 设置界面 › 可以打开禁用2FA表单UI ───────────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/caijiaxin/Library/Caches/ms-playwright/webkit-2191/pw_run.sh
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="two-factor.spec.ts" timestamp="2025-08-09T15:39:08.833Z" hostname="Mobile Chrome" tests="4" failures="4" skipped="0" time="0.011" errors="0">
+<testcase name="2FA 设置界面 › 可以登录并访问2FA设置页" classname="two-factor.spec.ts" time="0.003">
+<failure message="two-factor.spec.ts:54:3 可以登录并访问2FA设置页" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › two-factor.spec.ts:54:3 › 2FA 设置界面 › 可以登录并访问2FA设置页 ─────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/caijiaxin/Library/Caches/ms-playwright/chromium_headless_shell-1181/chrome-mac/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+<testcase name="2FA 设置界面 › 可以打开启用2FA向导并进行UI交互" classname="two-factor.spec.ts" time="0.002">
+<failure message="two-factor.spec.ts:60:3 可以打开启用2FA向导并进行UI交互" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › two-factor.spec.ts:60:3 › 2FA 设置界面 › 可以打开启用2FA向导并进行UI交互 ────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/caijiaxin/Library/Caches/ms-playwright/chromium_headless_shell-1181/chrome-mac/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+<testcase name="2FA 设置界面 › 已启用时可以查看与重新生成备用码UI" classname="two-factor.spec.ts" time="0.004">
+<failure message="two-factor.spec.ts:82:3 已启用时可以查看与重新生成备用码UI" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › two-factor.spec.ts:82:3 › 2FA 设置界面 › 已启用时可以查看与重新生成备用码UI ────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/caijiaxin/Library/Caches/ms-playwright/chromium_headless_shell-1181/chrome-mac/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+<testcase name="2FA 设置界面 › 可以打开禁用2FA表单UI" classname="two-factor.spec.ts" time="0.002">
+<failure message="two-factor.spec.ts:107:3 可以打开禁用2FA表单UI" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › two-factor.spec.ts:107:3 › 2FA 设置界面 › 可以打开禁用2FA表单UI ────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/caijiaxin/Library/Caches/ms-playwright/chromium_headless_shell-1181/chrome-mac/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="two-factor.spec.ts" timestamp="2025-08-09T15:39:08.833Z" hostname="Mobile Safari" tests="4" failures="4" skipped="0" time="0.004" errors="0">
+<testcase name="2FA 设置界面 › 可以登录并访问2FA设置页" classname="two-factor.spec.ts" time="0.001">
+<failure message="two-factor.spec.ts:54:3 可以登录并访问2FA设置页" type="FAILURE">
+<![CDATA[  [Mobile Safari] › two-factor.spec.ts:54:3 › 2FA 设置界面 › 可以登录并访问2FA设置页 ─────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/caijiaxin/Library/Caches/ms-playwright/webkit-2191/pw_run.sh
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+<testcase name="2FA 设置界面 › 可以打开启用2FA向导并进行UI交互" classname="two-factor.spec.ts" time="0.001">
+<failure message="two-factor.spec.ts:60:3 可以打开启用2FA向导并进行UI交互" type="FAILURE">
+<![CDATA[  [Mobile Safari] › two-factor.spec.ts:60:3 › 2FA 设置界面 › 可以打开启用2FA向导并进行UI交互 ────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/caijiaxin/Library/Caches/ms-playwright/webkit-2191/pw_run.sh
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+<testcase name="2FA 设置界面 › 已启用时可以查看与重新生成备用码UI" classname="two-factor.spec.ts" time="0.001">
+<failure message="two-factor.spec.ts:82:3 已启用时可以查看与重新生成备用码UI" type="FAILURE">
+<![CDATA[  [Mobile Safari] › two-factor.spec.ts:82:3 › 2FA 设置界面 › 已启用时可以查看与重新生成备用码UI ────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/caijiaxin/Library/Caches/ms-playwright/webkit-2191/pw_run.sh
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+<testcase name="2FA 设置界面 › 可以打开禁用2FA表单UI" classname="two-factor.spec.ts" time="0.001">
+<failure message="two-factor.spec.ts:107:3 可以打开禁用2FA表单UI" type="FAILURE">
+<![CDATA[  [Mobile Safari] › two-factor.spec.ts:107:3 › 2FA 设置界面 › 可以打开禁用2FA表单UI ────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /Users/caijiaxin/Library/Caches/ms-playwright/webkit-2191/pw_run.sh
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+</testsuite>
+</testsuites>

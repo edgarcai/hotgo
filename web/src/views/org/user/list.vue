@@ -241,7 +241,7 @@
   import { useDialog, useMessage } from 'naive-ui';
   import { ActionItem, BasicTable, TableAction } from '@/components/Table';
   import { BasicForm } from '@/components/Form/index';
-  import { Delete, Edit, List, ResetPwd } from '@/api/org/user';
+  import { Delete, Edit, List, ResetPwd, Reset2FA } from '@/api/org/user';
   import { columns } from './columns';
   import { PlusOutlined, DeleteOutlined } from '@vicons/antd';
   import { QrCodeOutline } from '@vicons/ionicons5';
@@ -338,6 +338,9 @@
           if (key === 0) {
             return handleResetPwd(record);
           }
+          if (key === 1) {
+            return handleReset2FA(record);
+          }
           if (key === 100) {
             return handleAddBalance(record);
           }
@@ -369,6 +372,10 @@
       {
         label: '重置密码',
         key: 0,
+      },
+      {
+        label: '重置2FA',
+        key: 1,
       },
       {
         label: '变更余额',
@@ -442,6 +449,21 @@
       onPositiveClick: () => {
         ResetPwd(record).then((_res) => {
           message.success('操作成功');
+          reloadTable();
+        });
+      },
+    });
+  }
+
+  function handleReset2FA(record: Recordable) {
+    dialog.warning({
+      title: '警告',
+      content: '你确定要重置该用户的双因子认证吗？\r\n此操作将完全清除用户的2FA设置，用户需要重新配置2FA。',
+      positiveText: '确定',
+      negativeText: '取消',
+      onPositiveClick: () => {
+        Reset2FA({ userId: record.id }).then((_res) => {
+          message.success('重置2FA成功');
           reloadTable();
         });
       },

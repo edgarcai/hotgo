@@ -10,7 +10,8 @@ import { jump } from '@/utils/http/axios';
 import { getNowUrl } from '@/utils/urlUtils';
 
 const LOGIN_PATH = PageEnum.BASE_LOGIN;
-const whitePathList = [LOGIN_PATH]; // no redirect whitelist
+const VERIFY_2FA_PATH = '/verify-2fa';
+const whitePathList = [LOGIN_PATH, VERIFY_2FA_PATH]; // no redirect whitelist
 
 export function createRouterGuards(router: Router) {
   const userStore = useUserStoreWidthOut();

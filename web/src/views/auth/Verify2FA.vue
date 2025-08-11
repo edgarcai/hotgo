@@ -89,6 +89,7 @@
   import { verifyLogin2FA } from '@/api/auth/twoFactor';
   import { ResultEnum } from '@/enums/httpEnum';
   import { PageEnum } from '@/enums/pageEnum';
+  import { getAppEnvConfig } from '@/utils/env';
 
   // 响应式数据
   const router = useRouter();
@@ -109,7 +110,16 @@
 
   // 计算属性
   const projectName = computed(() => {
-    return import.meta.env.VITE_GLOB_APP_TITLE || 'HotGo';
+    return getAppEnvConfig().VITE_GLOB_APP_TITLE || 'HotGo';
+  });
+
+  const redirectPath = computed(() => {
+    const r = (route.query?.redirect as string) || '/';
+    try {
+      return decodeURIComponent(r);
+    } catch (e) {
+      return '/';
+    }
   });
 
   // 方法
@@ -127,29 +137,33 @@
       const params = {
         tempToken: tempToken.value,
         code: code,
-        type: verificationMode.value === 'totp' ? 'totp' : 'backup',
+        type: (verificationMode.value === 'totp' ? 'totp' : 'backup') as 'totp' | 'backup',
       };
 
       const response = await verifyLogin2FA(params);
 
       if (response.code === ResultEnum.SUCCESS) {
-        // 验证成功，保存token和用户信息
-        const { token, user } = response.data;
+        // 验证成功，保存token，并拉取用户信息
+        const { token } = response.data;
 
         // 更新用户store
         userStore.setToken(token);
-        userStore.setUserInfo(user);
-
         // 保存到localStorage
         const ex = 30 * 24 * 60 * 60 * 1000;
         localStorage.setItem('ACCESS_TOKEN', token);
-        localStorage.setItem('CURRENT_USER', JSON.stringify(user));
+        // 拉取并设置用户信息
+        try {
+          const info = await userStore.GetInfo();
+          localStorage.setItem('CURRENT_USER', JSON.stringify(info));
+        } catch (e) {
+          // 忽略错误，后续进入应用会再次拉取
+          console.warn('获取用户信息失败，将在进入应用后重试');
+        }
 
         message.success('验证成功，正在跳转...');
 
         // 跳转到目标页面
-        const toPath = decodeURIComponent((route.query?.redirect || '/') as string);
-        await router.replace(toPath);
+        await router.replace(redirectPath.value || '/');
       } else {
         errorMessage.value = response.message || '验证失败，请重试';
 
@@ -182,7 +196,7 @@
     router.push({
       path: PageEnum.BASE_LOGIN,
       query: {
-        redirect: route.query.redirect,
+        redirect: redirectPath.value || '/',
       },
     });
   };

@@ -637,12 +637,31 @@ func (s *sAdminMember) List(ctx context.Context, in *adminin.MemberListInp) (lis
 	}
 
 	for _, v := range list {
+		// 查询用户岗位
 		columns, err := dao.AdminMemberPost.Ctx(ctx).Fields(dao.AdminMemberPost.Columns().PostId).Where(dao.AdminMemberPost.Columns().MemberId, v.Id).Array()
 		if err != nil {
 			err = gerror.Wrap(err, "获取用户岗位数据失败！")
 			return nil, 0, err
 		}
 		v.PostIds = g.NewVar(columns).Int64s()
+
+		// 查询用户2FA状态信息
+		var twoFactorInfo *entity.UserTwoFactor
+		err = dao.UserTwoFactor.Ctx(ctx).Where(dao.UserTwoFactor.Columns().UserId, v.Id).Scan(&twoFactorInfo)
+		if err != nil {
+			err = gerror.Wrap(err, "获取用户2FA数据失败！")
+			return nil, 0, err
+		}
+		
+		if twoFactorInfo != nil {
+			v.TwoFactorEnabled = twoFactorInfo.IsEnabled
+			v.TwoFactorBackupCodesCount = twoFactorInfo.BackupCodesCount
+			v.TwoFactorLastUsedAt = twoFactorInfo.LastUsedAt
+		} else {
+			v.TwoFactorEnabled = 0
+			v.TwoFactorBackupCodesCount = 0
+			v.TwoFactorLastUsedAt = nil
+		}
 	}
 	return
 }

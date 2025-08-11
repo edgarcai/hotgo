@@ -403,6 +403,22 @@ type (
 		// Option 获取测试分类选项
 		Option(ctx context.Context) (opts []*model.Option, err error)
 	}
+	ISysTwoFactorLog interface {
+		// Delete 删除2FA操作日志
+		Delete(ctx context.Context, in *sysin.TwoFactorLogDeleteInp) (err error)
+		// View 获取2FA操作日志详情
+		View(ctx context.Context, in *sysin.TwoFactorLogViewInp) (res *sysin.TwoFactorLogViewModel, err error)
+		// List 获取2FA操作日志列表
+		List(ctx context.Context, in *sysin.TwoFactorLogListInp) (list []*sysin.TwoFactorLogListModel, totalCount int, err error)
+		// Push 推送2FA操作日志
+		Push(ctx context.Context, in *sysin.TwoFactorLogPushInp)
+	}
+	ISysTwoFactorStats interface {
+		// GetStats 获取2FA统计数据
+		GetStats(ctx context.Context, in *sysin.TwoFactorStatsInp) (res *sysin.TwoFactorStatsModel, err error)
+		// GetTrend 获取2FA趋势数据
+		GetTrend(ctx context.Context, in *sysin.TwoFactorTrendInp) (list []*sysin.TwoFactorTrendModel, err error)
+	}
 )
 
 var (
@@ -427,6 +443,8 @@ var (
 	localSysServeLog       ISysServeLog
 	localSysSmsLog         ISysSmsLog
 	localSysTestCategory   ISysTestCategory
+	localSysTwoFactorLog   ISysTwoFactorLog
+	localSysTwoFactorStats ISysTwoFactorStats
 )
 
 func SysAddons() ISysAddons {
@@ -658,4 +676,26 @@ func SysTestCategory() ISysTestCategory {
 
 func RegisterSysTestCategory(i ISysTestCategory) {
 	localSysTestCategory = i
+}
+
+func SysTwoFactorLog() ISysTwoFactorLog {
+	if localSysTwoFactorLog == nil {
+		panic("implement not found for interface ISysTwoFactorLog, forgot register?")
+	}
+	return localSysTwoFactorLog
+}
+
+func RegisterSysTwoFactorLog(i ISysTwoFactorLog) {
+	localSysTwoFactorLog = i
+}
+
+func SysTwoFactorStats() ISysTwoFactorStats {
+	if localSysTwoFactorStats == nil {
+		panic("implement not found for interface ISysTwoFactorStats, forgot register?")
+	}
+	return localSysTwoFactorStats
+}
+
+func RegisterSysTwoFactorStats(i ISysTwoFactorStats) {
+	localSysTwoFactorStats = i
 }

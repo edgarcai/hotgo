@@ -145,4 +145,22 @@ export const columns = [
       return rows.createdAt;
     },
   },
+  {
+    title: '2FA状态',
+    key: 'twoFactorEnabled',
+    width: 100,
+    render(row) {
+      const type = row.twoFactorEnabled === 1 ? 'success' : 'default';
+      const label = row.twoFactorEnabled === 1 ? '已启用' : '未启用';
+      return h(
+        NTag,
+        {
+          style: { marginRight: '6px' },
+          type,
+          bordered: false,
+        },
+        { default: () => label }
+      );
+    },
+  },
 ];

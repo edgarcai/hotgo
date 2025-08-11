@@ -71,3 +71,12 @@ export function AddMemberIntegral(params) {
     params,
   });
 }
+
+// 重置用户双因子认证
+export function Reset2FA(params) {
+  return http.request({
+    url: '/member/reset2FA',
+    method: 'POST',
+    params,
+  });
+}
