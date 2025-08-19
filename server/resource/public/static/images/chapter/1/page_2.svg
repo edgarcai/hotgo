@@ -1,0 +1,19 @@
+<svg width="800" height="1200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#f1f3f4"/>
+  <rect x="50" y="50" width="700" height="100" fill="#28a745" rx="10"/>
+  <text x="400" y="110" text-anchor="middle" fill="white" font-size="24" font-family="Arial">第1章 - 第2页</text>
+  
+  <rect x="100" y="200" width="600" height="400" fill="#fff3cd" rx="5" stroke="#856404" stroke-width="2"/>
+  <text x="400" y="240" text-anchor="middle" fill="#856404" font-size="18" font-family="Arial">故事继续发展...</text>
+  <text x="400" y="280" text-anchor="middle" fill="#856404" font-size="14" font-family="Arial">主角遇到了新的挑战</text>
+  <text x="400" y="320" text-anchor="middle" fill="#856404" font-size="14" font-family="Arial">情节变得更加紧张刺激</text>
+  
+  <polygon points="300,350 500,350 400,450" fill="#dc3545"/>
+  <text x="400" y="420" text-anchor="middle" fill="white" font-size="16" font-family="Arial">!</text>
+  
+  <rect x="200" y="500" width="400" height="150" fill="#d1ecf1" rx="5" stroke="#0c5460" stroke-width="1"/>
+  <text x="400" y="530" text-anchor="middle" fill="#0c5460" font-size="14" font-family="Arial">对话框内容：</text>
+  <text x="400" y="560" text-anchor="middle" fill="#0c5460" font-size="16" font-family="Arial">"这真是太不可思议了！"</text>
+  <text x="400" y="590" text-anchor="middle" fill="#0c5460" font-size="16" font-family="Arial">"我们必须继续前进..."</text>
+  
+  <text x="400" y="1150" text-anchor="middle" fill="#6c757d" font-size="12" font-family="Arial">第2页 / 共

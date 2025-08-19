@@ -1,0 +1,25 @@
+<svg width="800" height="1200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#fff8e1"/>
+  <rect x="50" y="50" width="700" height="100" fill="#e91e63" rx="10"/>
+  <text x="400" y="110" text-anchor="middle" fill="white" font-size="24" font-family="Arial">第1章 - 第4页</text>
+  
+  <rect x="100" y="200" width="600" height="300" fill="#e3f2fd" rx="10" stroke="#0277bd" stroke-width="2"/>
+  <text x="400" y="240" text-anchor="middle" fill="#0277bd" font-size="18" font-family="Arial">高潮部分</text>
+  <text x="400" y="280" text-anchor="middle" fill="#0277bd" font-size="14" font-family="Arial">故事达到了最激动人心的时刻</text>
+  <text x="400" y="320" text-anchor="middle" fill="#0277bd" font-size="14" font-family="Arial">所有的谜团即将揭晓</text>
+  
+  <g transform="translate(400,380)">
+    <circle r="80" fill="none" stroke="#ff5722" stroke-width="4"/>
+    <circle r="60" fill="none" stroke="#ff9800" stroke-width="3"/>
+    <circle r="40" fill="none" stroke="#ffc107" stroke-width="2"/>
+    <circle r="20" fill="#ffeb3b"/>
+  </g>
+  
+  <rect x="200" y="550" width="400" height="200" fill="#f3e5f5" rx="10" stroke="#7b1fa2" stroke-width="2"/>
+  <text x="400" y="590" text-anchor="middle" fill="#7b1fa2" font-size="16" font-family="Arial">关键对话：</text>
+  <text x="400" y="620" text-anchor="middle" fill="#7b1fa2" font-size="14" font-family="Arial">"原来如此，一切都说得通了！"</text>
+  <text x="400" y="650" text-anchor="middle" fill="#7b1fa2" font-size="14" font-family="Arial">"但是我们还有最后一个挑战..."</text>
+  <text x="400" y="680" text-anchor="middle" fill="#7b1fa2" font-size="14" font-family="Arial">"准备好了吗？"</text>
+  
+  <text x="400" y="1150" text-anchor="middle" fill="#6c757d" font-size="12" font-family="Arial">第4页 / 共5页</text>
+</svg>

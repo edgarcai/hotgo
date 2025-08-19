@@ -51,6 +51,9 @@ var (
 				// 注册Api路由
 				router.Api(ctx, group)
 
+				// 注册AniX应用路由
+				router.Anix(ctx, group)
+
 				// 注册websocket路由
 				router.WebSocket(ctx, group)
 

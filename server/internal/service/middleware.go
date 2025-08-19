@@ -19,6 +19,8 @@ type (
 		ApiAuth(r *ghttp.Request)
 		// HomeAuth 前台页面鉴权中间件
 		HomeAuth(r *ghttp.Request)
+		// AnixAuth AniX应用鉴权中间件
+		AnixAuth(r *ghttp.Request)
 		// Ctx 初始化请求上下文
 		Ctx(r *ghttp.Request)
 		// CORS allows Cross-origin resource sharing.

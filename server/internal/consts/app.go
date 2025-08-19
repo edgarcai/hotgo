@@ -11,5 +11,6 @@ const (
 	AppApi       = "api"
 	AppHome      = "home"
 	AppWebSocket = "websocket"
+	AppAnix      = "anix"
 	AppDefault   = "default"
 )

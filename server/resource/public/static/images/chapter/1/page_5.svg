@@ -1,0 +1,26 @@
+<svg width="800" height="1200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#f0f8ff"/>
+  <rect x="50" y="50" width="700" height="100" fill="#2e7d32" rx="10"/>
+  <text x="400" y="110" text-anchor="middle" fill="white" font-size="24" font-family="Arial">第1章 - 第5页 (完)</text>
+  
+  <rect x="100" y="200" width="600" height="400" fill="#e8f5e9" rx="10" stroke="#388e3c" stroke-width="2"/>
+  <text x="400" y="250" text-anchor="middle" fill="#2e7d32" font-size="20" font-family="Arial">第一章完结</text>
+  <text x="400" y="290" text-anchor="middle" fill="#388e3c" font-size="16" font-family="Arial">故事告一段落</text>
+  <text x="400" y="330" text-anchor="middle" fill="#388e3c" font-size="14" font-family="Arial">主角成功完成了第一个任务</text>
+  <text x="400" y="370" text-anchor="middle" fill="#388e3c" font-size="14" font-family="Arial">但更大的冒险还在等待着...</text>
+  
+  <g transform="translate(400,450)">
+    <polygon points="-50,-30 50,-30 60,0 50,30 -50,30 -60,0" fill="#4caf50"/>
+    <text x="0" y="8" text-anchor="middle" fill="white" font-size="16" font-family="Arial">完成</text>
+  </g>
+  
+  <rect x="150" y="650" width="500" height="150" fill="#fff3e0" rx="10" stroke="#f57c00" stroke-width="2"/>
+  <text x="400" y="690" text-anchor="middle" fill="#e65100" font-size="16" font-family="Arial">下一章预告：</text>
+  <text x="400" y="720" text-anchor="middle" fill="#f57c00" font-size="14" font-family="Arial">新的挑战即将开始</text>
+  <text x="400" y="750" text-anchor="middle" fill="#f57c00" font-size="14" font-family="Arial">敬请期待第二章...</text>
+  
+  <rect x="250" y="900" width="300" height="60" fill="#1976d2" rx="30"/>
+  <text x="400" y="940" text-anchor="middle" fill="white" font-size="16" font-family="Arial">继续阅读下一章</text>
+  
+  <text x="400" y="1150" text-anchor="middle" fill="#6c757d" font-size="12" font-family="Arial">第5页 / 共5页</text>
+</svg>
